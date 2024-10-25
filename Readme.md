@@ -15,7 +15,7 @@ struct TMemorySegment
   union
   {
     TUint_2 Addr = 0;
-    // "Bytes" provides array access to memory at "Start.Addr"
+    // "Bytes" provides array access to memory at "Addr"
     TUint_1 * Bytes;
   };
   TUint_2 Size = 0;
