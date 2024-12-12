@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-23
+  Last mod.: 2024-12-12
 */
 
 #include "me_MemorySegment.h"
@@ -125,7 +125,7 @@ void Freetown::Release(
   Zero byte is not counted.
 */
 TMemorySegment Freetown::FromAsciiz(
-  TChar * Asciiz
+  TAsciiz Asciiz
 )
 {
   TMemorySegment Result;
@@ -134,16 +134,6 @@ TMemorySegment Freetown::FromAsciiz(
   Result.Size = strlen(Asciiz);
 
   return Result;
-}
-
-/*
-  Wrapper for typical use case: FromAsciiz("Literal")
-*/
-TMemorySegment Freetown::FromAsciiz(
-  const TChar * Asciiz
-)
-{
-  return FromAsciiz((TChar *) Asciiz);
 }
 
 /*

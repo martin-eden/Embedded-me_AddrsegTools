@@ -57,8 +57,7 @@ namespace me_MemorySegment
     );
 
     // Describe ASCIIZ structure as memory segment
-    TMemorySegment FromAsciiz(TChar * Asciiz);
-    TMemorySegment FromAsciiz(const TChar * Asciiz); // <3 U C
+    TMemorySegment FromAsciiz(TAsciiz Asciiz);
 
     // Represent address and size args as record
     TMemorySegment FromAddrSize(TUint_2 Addr, TUint_2 Size);
