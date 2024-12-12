@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-23
+  Last mod.: 2024-12-12
 */
 
 /*
@@ -13,7 +13,7 @@
 /*
   Central part of this module is memory segment definition.
 
-  It's 1-D segment of memory addresses.
+  It describes 1-D segment of memory units.
 
   It's pointer with size information.
 
@@ -33,11 +33,36 @@ namespace me_MemorySegment
   {
     union
     {
-      TUint_2 Addr = 0;
+      TAddress Addr = 0;
       // "Bytes" provides array access to memory at "Addr"
-      TUint_1 * Bytes;
+      TUnit * Bytes;
     };
     TUint_2 Size = 0;
+  };
+
+  /*
+    Segment iterator
+
+    Main use it to avoid writing for's. For writing while's.
+
+    Provide it with memory segment and unit getter function
+    (boolean function receives address and sets unit argument).
+    Then call GetNext() while it succeeds.
+  */
+  class TSegmentIterator
+  {
+    private:
+      TUint_2 CurrentAddr;
+      TUint_2 MaxAddr;
+      TUnitGetter Getter;
+
+    public:
+      void Init(
+        me_MemorySegment::TMemorySegment Segment,
+        TUnitGetter ArgGetter
+      );
+
+      TBool GetNext(TUnit * Value);
   };
 
   namespace Freetown
@@ -81,6 +106,12 @@ namespace me_MemorySegment
       me_MemorySegment::TMemorySegment Dest,
       me_MemorySegment::TMemorySegment Src
     );
+
+    // Get byte from memory segment. May be needed as getter for iterator
+    TBool GetUnit(
+      TUnit * Unit,
+      TAddress Addr
+    );
   }
 }
 
@@ -100,4 +131,5 @@ namespace me_MemorySegment
   2024-10-14 FromAddrSize
   2024-10-18 [>] Import Freetown from [me_ManagedMemory]
   2024-10-23 [-] Removed [me_MemoryPoint], <TMemorySegment_Bits>
+  2024-12-12 [>] Imported TSegmentIterator
 */

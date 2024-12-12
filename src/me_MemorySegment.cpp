@@ -14,7 +14,48 @@
 
 #include <me_Console.h> // <Console> for PrintWrappings()
 
+#include <me_UnoAddresses.h> // <RamMaxAddr> for GetUnit()
+
 using namespace me_MemorySegment;
+
+/*
+  Setup segment iterator
+*/
+void TSegmentIterator::Init(
+  TMemorySegment Segment,
+  TUnitGetter ArgGetter
+)
+{
+  CurrentAddr = Segment.Addr;
+  MaxAddr = CurrentAddr + Segment.Size - 1;
+  Getter = ArgGetter;
+}
+
+/*
+  Get next unit from iterator
+
+  On fail it returns false.
+
+  It fails when address is beyond segment or when getter failed.
+*/
+TBool TSegmentIterator::GetNext(
+  TUnit * Value
+)
+{
+  if (CurrentAddr > MaxAddr)
+    return false;
+
+  TBool IsOkay;
+
+  IsOkay = Getter(Value, CurrentAddr);
+
+  if (!IsOkay)
+    return false;
+
+  ++CurrentAddr;
+
+  return true;
+}
 
 /*
   [Debug] Print state and data to stdout
@@ -282,6 +323,33 @@ TBool Freetown::CopyMemTo(
     Dest.Bytes[Offset] = Src.Bytes[Offset];
 
   return true;
+}
+
+/*
+  Get byte from memory segment
+
+  Main use is as getter for iterator.
+
+  It fails when address is not in RAM memory.
+  On fail it returns false.
+*/
+TBool Freetown::GetUnit(
+  TUnit * Unit,
+  TAddress Addr
+)
+{
+  if (Addr > me_UnoAddresses::RamMaxAddr)
+    return false;
+
+  TUnit * Value = (TUnit *) Addr;
+
+  *Unit = *Value;
+
+  return true;
+  /*
+    Actually this function does not belong to [MemorySegment] module.
+    It should belong to something not yet existing like [SramMemory].
+  */
 }
 
 /*
