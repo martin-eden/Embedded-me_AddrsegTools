@@ -2,18 +2,19 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-24
+  Last mod.: 2024-12-12
 */
 
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
+#include <me_Uart.h>
 #include <me_UartSpeeds.h>
 #include <me_Console.h>
 
 void setup()
 {
-  Serial.begin(me_UartSpeeds::Arduino_Normal_Bps);
+  me_Uart::Init(me_UartSpeeds::Bps_115k);
 
   Console.Print("[me_MemorySegment] Okay, we are here.");
   RunTest();
@@ -102,13 +103,8 @@ void RunTest()
 }
 
 /*
-  2024-05-17
-  2024-05-25
-  2024-05-27
-  2024-05-29
-  2024-06-02
-  2024-10-05
-  2024-10-08
-  2024-10-10
-  2024-10-18
+  2024-05 ####
+  2024-06 #
+  2024-10 ####
+  2024-12-12
 */
