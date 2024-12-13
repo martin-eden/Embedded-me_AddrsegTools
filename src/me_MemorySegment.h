@@ -54,12 +54,12 @@ namespace me_MemorySegment
     private:
       TUint_2 CurrentAddr;
       TUint_2 MaxAddr;
-      TUnitGetter Getter;
+      TResponsiveMethod Getter;
 
     public:
       void Init(
         me_MemorySegment::TMemorySegment Segment,
-        TUnitGetter ArgGetter
+        TResponsiveMethod ArgGetter
       );
 
       TBool GetNext(TUnit * Value);
@@ -107,10 +107,10 @@ namespace me_MemorySegment
       me_MemorySegment::TMemorySegment Src
     );
 
-    // Get byte from memory segment. May be needed as getter for iterator
-    TBool GetUnit(
-      TUnit * Unit,
-      TAddress Addr
+    // Get byte from memory segment. Getter for iterator
+    TBool UnitGetter(
+      TAddress DestUnit,
+      TAddress SrcUnit
     );
   }
 }

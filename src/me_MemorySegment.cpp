@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-12
+  Last mod.: 2024-12-13
 */
 
 #include "me_MemorySegment.h"
@@ -23,7 +23,7 @@ using namespace me_MemorySegment;
 */
 void TSegmentIterator::Init(
   TMemorySegment Segment,
-  TUnitGetter ArgGetter
+  TResponsiveMethod ArgGetter
 )
 {
   CurrentAddr = Segment.Addr;
@@ -47,7 +47,7 @@ TBool TSegmentIterator::GetNext(
 
   TBool IsOkay;
 
-  IsOkay = Getter(Value, CurrentAddr);
+  IsOkay = Getter((TAddress) Value, CurrentAddr);
 
   if (!IsOkay)
     return false;
@@ -330,22 +330,24 @@ TBool Freetown::CopyMemTo(
 
   Main use is as getter for iterator.
 
-  It fails when address is not in RAM memory.
+  It fails when addresses are not in RAM memory.
   On fail it returns false.
 */
-TBool Freetown::GetUnit(
-  TUnit * Unit,
-  TAddress Addr
+TBool Freetown::UnitGetter(
+  TAddress DestUnitAddr,
+  TAddress SrcUnitAddr
 )
 {
-  if (Addr > me_UnoAddresses::RamMaxAddr)
+  if (DestUnitAddr > me_UnoAddresses::RamMaxAddr)
     return false;
 
-  TUnit * Value = (TUnit *) Addr;
+  if (SrcUnitAddr > me_UnoAddresses::RamMaxAddr)
+    return false;
 
-  *Unit = *Value;
+  *(TUnit *) DestUnitAddr = *(TUnit *) SrcUnitAddr;
 
   return true;
+
   /*
     Actually this function does not belong to [MemorySegment] module.
     It should belong to something not yet existing like [SramMemory].
