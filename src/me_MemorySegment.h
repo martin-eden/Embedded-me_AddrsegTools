@@ -46,8 +46,10 @@ namespace me_MemorySegment
     Main use it to avoid writing for's. For writing while's.
 
     Provide it with memory segment and unit getter function
-    (boolean function receives address and sets unit argument).
+    (boolean function that receives address and sets unit argument).
     Then call GetNext() while it succeeds.
+
+    And also it is sneaky way to call "for [Addr, Addr+Size)" cycle.
   */
   class TSegmentIterator
   {
