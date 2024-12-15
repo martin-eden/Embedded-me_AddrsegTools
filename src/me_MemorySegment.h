@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-12
+  Last mod.: 2024-12-15
 */
 
 /*
@@ -43,35 +43,25 @@ namespace me_MemorySegment
   /*
     Segment iterator
 
-    Main use it to avoid writing for's. For writing while's.
+    Main use it to avoid writing for's. For writing while's instead.
 
-    Provide it with memory segment and unit getter function
-    (boolean function that receives address and sets unit argument).
-    Then call GetNext() while it succeeds.
-
-    And also it is sneaky way to call "for [Addr, Addr+Size)" cycle.
+    Initialize it with some memory segment. Then call GetNext()
+    to get address. Until GetNext() fails.
   */
   class TSegmentIterator
   {
     private:
       TUint_2 CurrentAddr;
       TUint_2 MaxAddr;
-      TResponsiveMethod Getter;
 
     public:
-      void Init(
-        me_MemorySegment::TMemorySegment Segment,
-        TResponsiveMethod ArgGetter
-      );
+      TBool Init(TMemorySegment Segment);
 
-      TBool GetNext(TUnit * Value);
+      TBool GetNext(TAddress * Address);
   };
 
   namespace Freetown
   {
-    // [Debug] Print fields and data to stdout
-    void PrintWrappings(TMemorySegment MemSeg);
-
     // Reserve block of memory. Zero after allocation
     TBool Reserve(
       me_MemorySegment::TMemorySegment * MemSeg,
@@ -108,30 +98,14 @@ namespace me_MemorySegment
       me_MemorySegment::TMemorySegment Dest,
       me_MemorySegment::TMemorySegment Src
     );
-
-    // Get byte from memory segment. Getter for iterator
-    TBool UnitGetter(
-      TAddress DestUnit,
-      TAddress SrcUnit
-    );
   }
 }
 
 /*
-  2024-05-17
-  2024-05-23 GetByte
-  2024-05-25 PrintWrappings, PrintMem, CopyMemTo, Spawn, Kill
-  2024-05-27 ReserveChunk, ReleaseChunk, ZeroMem
-  2024-05-30 CloneFrom
-  2024-06-02 < CloneFrom
-  2024-06-04
-  2024-06-07 IsEqualTo
-  2024-06-08 IsEqualTo.Asciiz
-  2024-09-15 Zeroing before alloc/free is part of contract now
-  2024-10-05 Freetown. Moved memory-changing code to [me_ManagedMemory]
-  2024-10-11 IsInside
-  2024-10-14 FromAddrSize
-  2024-10-18 [>] Import Freetown from [me_ManagedMemory]
-  2024-10-23 [-] Removed [me_MemoryPoint], <TMemorySegment_Bits>
+  2024-05 #####
+  2024-06 ####
+  2024-09 #
+  2024-10 #####
   2024-12-12 [>] Imported TSegmentIterator
+  2024-12-15
 */

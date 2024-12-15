@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-13
+  Last mod.: 2024-12-15
 */
 
 #include "me_MemorySegment.h"
@@ -12,79 +12,43 @@
 #include <Arduino.h> // malloc(), free(), min()
 #include <string.h> // strlen() for FromAsciiz()
 
-#include <me_Console.h> // <Console> for PrintWrappings()
-
-#include <me_UnoAddresses.h> // <RamMaxAddr> for GetUnit()
-
 using namespace me_MemorySegment;
 
 /*
   Setup segment iterator
 */
-void TSegmentIterator::Init(
-  TMemorySegment Segment,
-  TResponsiveMethod ArgGetter
+TBool TSegmentIterator::Init(
+  TMemorySegment Segment
 )
 {
+  if ((Segment.Addr == 0) && (Segment.Size == 0))
+    return false;
+
   CurrentAddr = Segment.Addr;
   MaxAddr = CurrentAddr + Segment.Size - 1;
-  Getter = ArgGetter;
-}
-
-/*
-  Get next unit from iterator
-
-  On fail it returns false.
-
-  It fails when address is beyond segment or when getter failed.
-*/
-TBool TSegmentIterator::GetNext(
-  TUnit * Value
-)
-{
-  if (CurrentAddr > MaxAddr)
-    return false;
-
-  TBool IsOkay;
-
-  IsOkay = Getter((TAddress) Value, CurrentAddr);
-
-  if (!IsOkay)
-    return false;
-
-  ++CurrentAddr;
 
   return true;
 }
 
 /*
-  [Debug] Print state and data to stdout
+  Get next address from iterator
+
+  On fail it returns false.
+
+  It fails when address is beyond segment.
 */
-void Freetown::PrintWrappings(
-  TMemorySegment MemSeg
+TBool TSegmentIterator::GetNext(
+  TAddress * Address
 )
 {
-  Console.Print("TMemorySegment (");
-  Console.Indent();
+  if (CurrentAddr > MaxAddr)
+    return false;
 
-  Console.Write("Addr");
-  Console.Print(MemSeg.Addr);
-  Console.EndLine();
+  *Address = CurrentAddr;
 
-  Console.Write("Size");
-  Console.Print(MemSeg.Size);
-  Console.EndLine();
+  ++CurrentAddr;
 
-  Console.Write("Data (");
-
-  for (TUint_2 Offset = 0; Offset < MemSeg.Size; ++Offset)
-    Console.Print(MemSeg.Bytes[Offset]);
-
-  Console.Write(")");
-  Console.EndLine();
-
-  Console.Unindent();
-  Console.Print(")");
+  return true;
 }
 
 /*
@@ -326,43 +290,8 @@ TBool Freetown::CopyMemTo(
 }
 
 /*
-  Get byte from memory segment
-
-  Main use is as getter for iterator.
-
-  It fails when addresses are not in RAM memory.
-  On fail it returns false.
-*/
-TBool Freetown::UnitGetter(
-  TAddress DestUnitAddr,
-  TAddress SrcUnitAddr
-)
-{
-  if (DestUnitAddr > me_UnoAddresses::RamMaxAddr)
-    return false;
-
-  if (SrcUnitAddr > me_UnoAddresses::RamMaxAddr)
-    return false;
-
-  *(TUnit *) DestUnitAddr = *(TUnit *) SrcUnitAddr;
-
-  return true;
-
-  /*
-    Actually this function does not belong to [MemorySegment] module.
-    It should belong to something not yet existing like [SramMemory].
-  */
-}
-
-/*
-  2024-05-23 GetByte
-  2024-05-25 PrintWrappings, PrintMem, CopyMemTo, Spawn, Kill
-  2024-05-27 CopyMemFrom
-  2024-05-30 CloneFrom
-  2024-06-07 IsEqualTo
-  2024-10-05 [+] Freetown. Memory-changing functions moved to their Freetown
-  2024-10-10 [<] PrintMem moved to [me_Console]
-  2024-10-11 [+] IsInside
-  2024-10-14 [+] FromAddrSize
-  2024-10-18 [>] Import Freetown from [me_ManagedMemory]
+  2024-05 ####
+  2024-06 #
+  2024-10 #####
+  2024-12-15
 */
