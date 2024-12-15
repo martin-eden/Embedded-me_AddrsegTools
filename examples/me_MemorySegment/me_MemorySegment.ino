@@ -2,7 +2,18 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-12
+  Last mod.: 2024-12-15
+*/
+
+/*
+  Demonstration of base functionality of memory segment:
+
+  * Create structure (FromAsciiz, FromAddrSize)
+  * Access (iterator)
+  * Copy (CopyMemTo)
+  * Manage memory (Reserve, Release)
+
+  See RunTest().
 */
 
 #include <me_MemorySegment.h>
@@ -27,79 +38,155 @@ void loop()
 
 // --
 
+void PrintRawContents(
+  me_MemorySegment::TMemorySegment Memseg
+)
+{
+  Console.Write("Contents ( ");
+  Console.Write(Memseg);
+  Console.Write(" )");
+
+  Console.EndLine();
+}
+
+void PrintWrappings(
+  me_MemorySegment::TMemorySegment Memseg
+)
+{
+  Console.Write("Addr (");
+  Console.Print(Memseg.Addr);
+  Console.Write(")");
+
+  Console.Write(" ");
+
+  Console.Write("Size (");
+  Console.Print(Memseg.Size);
+  Console.Write(")");
+
+  Console.EndLine();
+}
+
+/*
+  Print contents using byte iterator
+*/
+void PrintByteContents(
+  me_MemorySegment::TMemorySegment Memseg
+)
+{
+  me_MemorySegment::TSegmentIterator Rator;
+  TAddress Addr;
+  TUnit Unit;
+
+  if (!Rator.Init(Memseg))
+  {
+    Console.Print("Failed to setup iterator.");
+    return;
+  }
+
+  Console.Write("Byte-Contents (");
+
+  while (Rator.GetNext(&Addr))
+  {
+    Unit = *(TUnit *) Addr;
+    Console.Print(Unit);
+  }
+
+  Console.Write(")");
+
+  Console.EndLine();
+}
+
+void PrintSegmentDetails(
+  TAsciiz Header,
+  me_MemorySegment::TMemorySegment Memseg
+)
+{
+  Console.Print(Header);
+
+  Console.Indent();
+
+  PrintWrappings(Memseg);
+  PrintRawContents(Memseg);
+  PrintByteContents(Memseg);
+
+  Console.Unindent();
+}
+
 void RunTest()
 {
-  /*
-    Guys, sorry for example cluttered with pretty-printing.
-
-    This sketch also serves as field test of [me_Conosle].
-  */
-  Console.Indent();
-
-  Console.Print("--");
-  Console.Print("This demo will show typical applications of [me_MemorySegment].");
-  Console.Print("");
-  Console.Print("Module provides functions to cast memory segment from ASCIIZ.");
-  Console.Print("Plus debug print.");
-  Console.Print("");
-  Console.Print("Also there are intersection and equality checking functions.");
-  Console.Print("But we are too lazy to write demo code for them.");
-  Console.Print("");
-  Console.Print("We recommend to match output with reading code.");
-
-  Console.Indent();
-
   using
-    me_MemorySegment::TMemorySegment,
-    me_MemorySegment::Freetown::FromAsciiz,
-    me_MemorySegment::Freetown::PrintWrappings;
+    me_MemorySegment::TMemorySegment;
 
-  TMemorySegment MemSeg;
+  TMemorySegment Memseg;
 
-  Console.Print("--");
-  Console.Print("ASCIIZ to memory segment");
+  {
+    using
+      me_MemorySegment::Freetown::FromAsciiz;
 
-  // Treat ASCIIZ as memory segment. Just cast, no data copied.
-  MemSeg = FromAsciiz("Goodbye zero tail!");
+    /*
+      FromAsciiz(): Treat ASCIIZ as memory segment
 
-  Console.Indent();
-  Console.Write("Contents ( ");
-  Console.Write(MemSeg);
-  Console.Write(" )");
-  Console.EndLine();
-  Console.Unindent();
+      Note that function return segment not including zero byte.
+    */
+    Memseg = FromAsciiz("ABC");
 
-  Console.Indent();
-  Console.Write("Debug contents (");
-  Console.Indent();
-  PrintWrappings(MemSeg);
-  Console.Unindent();
-  Console.Write(")");
-  Console.EndLine();
-  Console.Unindent();
+    PrintSegmentDetails("FromAsciiz", Memseg);
+  }
 
-  Console.Print("--");
+  {
+    using
+      me_MemorySegment::Freetown::FromAddrSize;
 
-  Console.Print("AVR registers to memory segment");
+    /*
+      FromAddrSize(): Construct memory segment
+    */
+    // Stack pointer is at bytes 93 and 94
+    Memseg = FromAddrSize(93, 2);
 
-  // AVR registers are at addresses 0 .. 31
-  MemSeg.Addr = 0;
-  MemSeg.Size = 32;
+    PrintSegmentDetails("FromAddrSize", Memseg);
+  }
 
-  Console.Indent();
-  Console.Write("Debug contents (");
-  Console.Indent();
-  PrintWrappings(MemSeg);
-  Console.Unindent();
-  Console.Write(")");
-  Console.EndLine();
-  Console.Unindent();
+  {
+    using
+      me_MemorySegment::Freetown::FromAsciiz,
+      me_MemorySegment::Freetown::Reserve,
+      me_MemorySegment::Freetown::CopyMemTo,
+      me_MemorySegment::Freetown::Release;
 
-  Console.Print("--");
-  Console.Unindent();
+    TMemorySegment SourceData = FromAsciiz("DATA");
+    TMemorySegment DestData;
 
-  Console.Print("--");
-  Console.Unindent();
+    Console.Print("-- Reserve, CopyMemTo, Release");
+
+    /*
+      Reserve(): Allocate memory and zero data
+    */
+    if (!Reserve(&DestData, SourceData.Size))
+    {
+      Console.Print("No memory for temporary data.");
+      return;
+    }
+
+    PrintSegmentDetails("Reserve", DestData);
+
+    /*
+      CopyMemTo(): Copy data to another segment
+    */
+    if (!CopyMemTo(DestData, SourceData))
+    {
+      Console.Print("Failed to copy data.");
+      return;
+    }
+
+    PrintSegmentDetails("CopyMemTo", DestData);
+
+    /*
+      Release(): Deallocate memory and zero data
+    */
+    Release(&DestData);
+
+    PrintSegmentDetails("Release", DestData);
+  }
 }
 
 /*
@@ -107,4 +194,5 @@ void RunTest()
   2024-06 #
   2024-10 ####
   2024-12-12
+  2024-12-15
 */
