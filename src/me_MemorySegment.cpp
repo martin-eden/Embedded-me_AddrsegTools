@@ -52,10 +52,9 @@ TBool TSegmentIterator::GetNext(
 }
 
 /*
-  Reserve block of memory. Zero data after allocation
+  Reserve block of memory
 
-  Opportunistically calls custom memory manager.
-  Uses stock malloc() as fallback option.
+  Zeroes data after allocation.
 */
 TBool Freetown::Reserve(
   TMemorySegment * MemSeg,
@@ -66,34 +65,23 @@ TBool Freetown::Reserve(
   if (Size == 0)
     return true;
 
-  TUint_2 MallocAddr = (TUint_2) malloc(Size);
+  TAddress MallocAddr = (TUint_2) malloc(Size);
 
   if (MallocAddr == 0)
-  {
-    /* [Debug]
-    printf_P(PSTR("Failed to reserve %u bytes.\n"), Size);
-    //*/
     return false;
-  }
 
   MemSeg->Addr = MallocAddr;
   MemSeg->Size = Size;
 
-  // Zero memory (contract)
   ZeroMem(*MemSeg);
-
-  /* [Debug]
-  printf_P(PSTR("Reserve ( Addr %05u Size %05u )\n"), MemSeg->Addr, MemSeg->Size);
-  //*/
 
   return true;
 }
 
 /*
-  Release block of memory. Zero before release
+  Release block of memory
 
-  Opportunistically calls memory manager if it is alive.
-  Uses free() as fallback option.
+  Zeroes data before release.
 */
 void Freetown::Release(
   TMemorySegment * MemSeg
@@ -106,11 +94,6 @@ void Freetown::Release(
     return;
   }
 
-  /* [Debug]
-  printf_P(PSTR("Release ( Addr %05u Size %05u )\n"), MemSeg->Addr, MemSeg->Size);
-  //*/
-
-  // Zero memory (optional)
   ZeroMem(*MemSeg);
 
   free((void *) MemSeg->Addr);
@@ -135,7 +118,7 @@ TMemorySegment Freetown::FromAsciiz(
 {
   TMemorySegment Result;
 
-  Result.Addr = (TUint_2) Asciiz;
+  Result.Addr = (TAddress) Asciiz;
   Result.Size = strlen(Asciiz);
 
   return Result;
@@ -145,7 +128,7 @@ TMemorySegment Freetown::FromAsciiz(
   Represent address and size args as record
 */
 TMemorySegment Freetown::FromAddrSize(
-  TUint_2 Addr,
+  TAddress Addr,
   TUint_2 Size
 )
 {
@@ -171,8 +154,8 @@ TBool Freetown::Intersects(
   if ((A.Size == 0) || (B.Size == 0))
     return false;
 
-  TUint_2 A_Start = A.Addr;
-  TUint_2 B_Start = B.Addr;
+  TAddress A_Start = A.Addr;
+  TAddress B_Start = B.Addr;
 
   if (A_Start < B_Start)
   {
@@ -206,14 +189,14 @@ TBool Freetown::IsInside(
   if ((A.Size == 0) || (B.Size == 0))
     return false;
 
-  TUint_2 A_Start = A.Addr;
-  TUint_2 B_Start = B.Addr;
+  TAddress A_Start = A.Addr;
+  TAddress B_Start = B.Addr;
 
   if (!(A_Start >= B_Start))
     return false;
 
-  TUint_2 A_Stop = A_Start + A.Size - 1;
-  TUint_2 B_Stop = B_Start + B.Size - 1;
+  TAddress A_Stop = A_Start + A.Size - 1;
+  TAddress B_Stop = B_Start + B.Size - 1;
 
   if (!(A_Stop <= B_Stop))
     return false;

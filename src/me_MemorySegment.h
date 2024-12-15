@@ -51,8 +51,8 @@ namespace me_MemorySegment
   class TSegmentIterator
   {
     private:
-      TUint_2 CurrentAddr;
-      TUint_2 MaxAddr;
+      TAddress CurrentAddr;
+      TAddress MaxAddr;
 
     public:
       TBool Init(TMemorySegment Segment);
@@ -77,7 +77,7 @@ namespace me_MemorySegment
     TMemorySegment FromAsciiz(TAsciiz Asciiz);
 
     // Represent address and size args as record
-    TMemorySegment FromAddrSize(TUint_2 Addr, TUint_2 Size);
+    TMemorySegment FromAddrSize(TAddress Addr, TUint_2 Size);
 
     // Return true if segments intersect
     TBool Intersects(TMemorySegment A, TMemorySegment B);
