@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-15
+  Last mod.: 2024-12-17
 */
 
 #include "me_MemorySegment.h"
@@ -10,7 +10,7 @@
 #include <me_BaseTypes.h>
 
 #include <Arduino.h> // malloc(), free(), min()
-#include <string.h> // strlen() for FromAsciiz()
+#include <me_Asciiz.h>
 
 using namespace me_MemorySegment;
 
@@ -105,21 +105,19 @@ void Freetown::Release(
 /*
   Cast ASCII structure to memory segment
 
-  What is called "string" in C is a pointer to zero-terminated
-  sequence of bytes.
-
-  This function describes span of that sequence.
-
   Zero byte is not counted.
 */
 TMemorySegment Freetown::FromAsciiz(
   TAsciiz Asciiz
 )
 {
+  using
+    me_Asciiz::GetLength_Workmem;
+
   TMemorySegment Result;
 
   Result.Addr = (TAddress) Asciiz;
-  Result.Size = strlen(Asciiz);
+  GetLength_Workmem(&Result.Size, Asciiz);
 
   return Result;
 }
