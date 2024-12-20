@@ -1,6 +1,6 @@
 # What
 
-(2024-05/2024-06, 2024-09/2024-10)
+(2024-05/2024-06, 2024-09/2024-10, 2024-12)
 
 Arduino library describing memory segment.
 
@@ -50,43 +50,34 @@ Actually this module became like new base type and widely used
 by my other libraries.
 
 
-## Sample output
+## Reference output
 
 ```
 [me_MemorySegment] Okay, we are here.
-  --
-  This demo will show typical applications of [me_MemorySegment].
-
-  Module provides functions to cast memory segment from ASCIIZ.
-  Plus debug print.
-
-  Also there are intersection and equality checking functions.
-  But we are too lazy to write demo code for them.
-
-  We recommend to match output with reading code.
-    --
-    ASCIIZ to memory segment
-      Contents ( Goodbye zero tail! )
-      Debug contents (
-        TMemorySegment (
-          Addr 00682
-          Size 00018
-          Data ( 071 111 111 100 098 121 101 032 122 101 114 111 032 116 097 105 108 033 )
-        )
-      )
-    --
-    AVR registers to memory segment
-      Debug contents (
-        TMemorySegment (
-          Addr 00000
-          Size 00032
-          Data ( 163 000 000 000 174 008 003 000 001 001 032 000 000 000 232 008 016 000 000 000 000 000 048 008 002 000 003 000 231 008 030 000 )
-        )
-      )
-    --
-  --
+  FromAsciiz
+    Addr ( 00[me_MemorySegment] Okay, we are here.
+  FromAsciiz
+    Addr ( 00372 ) Size ( 00003 )
+    Contents ( ABC )
+    Byte-Contents ( 065 066 067 )
+  FromAddrSize
+    Addr ( 00093 ) Size ( 00002 )
+    Contents (  )
+    Byte-Contents ( 243 008 )
+  ( Reserve CopyMemTo Release )
+    Reserve
+      Addr ( 00553 ) Size ( 00004 )
+      Contents (  )
+      Byte-Contents ( 000 000 000 000 )
+    CopyMemTo
+      Addr ( 00553 ) Size ( 00004 )
+      Contents ( DATA )
+      Byte-Contents ( 068 065 084 065 )
+    Release
+      Addr ( 00000 ) Size ( 00000 )
+      Contents (  )
+      Failed to setup iterator.
 [me_MemorySegment] Done.
-
 ```
 
 ## Code
@@ -103,14 +94,9 @@ by my other libraries.
   * bash
 
 
-## Install
+## Install/remove
 
-Run [Install.sh](Install.sh).
-
-
-## Remove
-
-Run [Remove.sh](Remove.sh).
+Easy way is to clone [GetLibs][GetLibs] repo and run it's code.
 
 
 ## See also
@@ -127,6 +113,8 @@ Run [Remove.sh](Remove.sh).
 [me_List]: https://github.com/martin-eden/Embedded-me_List
 [me_Menu]: https://github.com/martin-eden/Embedded-me_Menu
 [me_RgbStripeConsole]: https://github.com/martin-eden/Embedded-me_RgbStripeConsole
+
+[GetLibs]: https://github.com/martin-eden/Embedded-Framework-GetLibs
 
 [Embedded]: https://github.com/martin-eden/Embedded_Crafts/tree/master/Parts
 [Repos]: https://github.com/martin-eden/contents
