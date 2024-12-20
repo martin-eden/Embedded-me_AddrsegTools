@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-15
+  Last mod.: 2024-12-20
 */
 
 /*
@@ -20,12 +20,11 @@
 
 #include <me_BaseTypes.h>
 #include <me_Uart.h>
-#include <me_UartSpeeds.h>
 #include <me_Console.h>
 
 void setup()
 {
-  me_Uart::Init(me_UartSpeeds::Bps_115k);
+  me_Uart::Init(me_Uart::Speed_115k_Bps);
 
   Console.Print("[me_MemorySegment] Okay, we are here.");
   RunTest();

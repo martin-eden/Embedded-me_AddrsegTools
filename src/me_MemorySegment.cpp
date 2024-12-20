@@ -5,7 +5,7 @@
   Last mod.: 2024-12-17
 */
 
-#include "me_MemorySegment.h"
+#include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
 
