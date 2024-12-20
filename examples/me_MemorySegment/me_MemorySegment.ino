@@ -27,7 +27,9 @@ void setup()
   me_Uart::Init(me_Uart::Speed_115k_Bps);
 
   Console.Print("[me_MemorySegment] Okay, we are here.");
+  Console.Indent();
   RunTest();
+  Console.Unindent();
   Console.Print("[me_MemorySegment] Done.");
 }
 
@@ -155,7 +157,8 @@ void RunTest()
     TMemorySegment SourceData = FromAsciiz("DATA");
     TMemorySegment DestData;
 
-    Console.Print("-- Reserve, CopyMemTo, Release");
+    Console.Print("( Reserve CopyMemTo Release )");
+    Console.Indent();
 
     /*
       Reserve(): Allocate memory and zero data
@@ -185,6 +188,8 @@ void RunTest()
     Release(&DestData);
 
     PrintSegmentDetails("Release", DestData);
+
+    Console.Unindent();
   }
 }
 
