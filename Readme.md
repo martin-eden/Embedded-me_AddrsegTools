@@ -55,8 +55,6 @@ by my other libraries.
 ```
 [me_MemorySegment] Okay, we are here.
   FromAsciiz
-    Addr ( 00[me_MemorySegment] Okay, we are here.
-  FromAsciiz
     Addr ( 00372 ) Size ( 00003 )
     Contents ( ABC )
     Byte-Contents ( 065 066 067 )
