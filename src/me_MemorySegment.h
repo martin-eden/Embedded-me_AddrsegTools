@@ -102,10 +102,30 @@ namespace me_MemorySegment
 }
 
 /*
-  2024-05 # # # # #
-  2024-06 # # # #
-  2024-09 #
-  2024-10 # # # # #
-  2024-12-12 [>] Imported TSegmentIterator
-  2024-12-15
+  Macro to embed ASCIIZ into program memory segment
+
+  Used as
+
+    Console.PrintProgmem(AsProgmemSeg("Hello"));
+*/
+#define AsProgmemSeg(Asciiz) \
+  ( \
+    __extension__ \
+    ( \
+      { \
+        static const TUint_1 ProgmemData[] [[gnu::progmem]] = (Asciiz); \
+        \
+        me_MemorySegment::TMemorySegment ProgmemSeg = \
+          { \
+            { .Addr = (TAddress) ProgmemData }, \
+            .Size = sizeof(ProgmemData) - 1 \
+          }; \
+        ProgmemSeg; \
+      } \
+    ) \
+  )
+
+/*
+  2024 # # # # # # # # # # # # # # # # #
+  2025-08-22
 */

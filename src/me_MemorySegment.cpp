@@ -9,8 +9,8 @@
 
 #include <me_BaseTypes.h>
 
-#include <Arduino.h> // malloc(), free(), min()
 #include <me_Asciiz.h>
+#include <Arduino.h> // malloc(), free(), min()
 
 using namespace me_MemorySegment;
 
