@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-15
+  Last mod.: 2025-08-24
 */
 
 /*
@@ -45,33 +45,28 @@ namespace me_MemorySegment
 
     Main use it to avoid writing for's. For writing while's instead.
 
-    Initialize it with some memory segment. Then call GetNext()
+    Init() it with some memory segment. Then call GetNext()
     to get address. Until GetNext() fails.
   */
   class TSegmentIterator
   {
-    private:
-      TAddress CurrentAddr;
-      TAddress MaxAddr;
-
     public:
       TBool Init(TMemorySegment Segment);
 
       TBool GetNext(TAddress * Address);
+
+    private:
+      TAddress CurrentAddr;
+      TAddress MaxAddr;
   };
 
   namespace Freetown
   {
-    // Reserve block of memory. Zero after allocation
-    TBool Reserve(
-      me_MemorySegment::TMemorySegment * MemSeg,
-      TUint_2 Size
-    );
+    // Reserve block of memory. Zeroes after allocation
+    TBool Reserve(TMemorySegment * MemSeg, TUint_2 Size);
 
-    // Release block of memory. Zero before release
-    void Release(
-      me_MemorySegment::TMemorySegment * MemSeg
-    );
+    // Release block of memory. Zeroes before release
+    void Release(TMemorySegment * MemSeg);
 
     // Describe ASCIIZ structure as memory segment
     TMemorySegment FromAsciiz(TAsciiz Asciiz);
@@ -89,15 +84,10 @@ namespace me_MemorySegment
     TBool AreEqual(TMemorySegment A, TMemorySegment B);
 
     // Fill memory span with zero byte
-    void ZeroMem(
-      me_MemorySegment::TMemorySegment MemSeg
-    );
+    void ZeroMem(TMemorySegment MemSeg);
 
     // Copy data to another segment
-    TBool CopyMemTo(
-      me_MemorySegment::TMemorySegment Dest,
-      me_MemorySegment::TMemorySegment Src
-    );
+    TBool CopyMemTo(TMemorySegment Dest, TMemorySegment Src);
   }
 }
 
