@@ -41,6 +41,19 @@ namespace me_MemorySegment
   };
 
   /*
+    Self functions for memory segment
+  */
+
+  // Validity check
+  TBool IsValid(TMemorySegment Seg);
+
+  // Invalidation
+  void Invalidate(TMemorySegment * Seg);
+
+  // Get last address helper
+  TAddress GetEndAddr(TMemorySegment Seg);
+
+  /*
     Segment iterator
 
     Main use it to avoid writing for's. For writing while's instead.
@@ -56,12 +69,21 @@ namespace me_MemorySegment
       TBool GetNext(TAddress * Address);
 
     private:
-      TAddress CurrentAddr;
-      TAddress MaxAddr;
+      TAddress MaxAddr = 0;
+      TAddress CurrentAddr = 1;
   };
 
   namespace Freetown
   {
+    // Fields equality check
+    TBool IsSameRec(TMemorySegment A, TMemorySegment B);
+
+    // Compatibility check
+    TBool AreCompatible(TMemorySegment A, TMemorySegment B);
+
+    // Data equality check
+    TBool AreEqual(TMemorySegment A, TMemorySegment B);
+
     // Reserve block of memory. Zeroes after allocation
     TBool Reserve(TMemorySegment * MemSeg, TUint_2 Size);
 
@@ -79,9 +101,6 @@ namespace me_MemorySegment
 
     // Return true if segment A is inside segment B
     TBool IsInside(TMemorySegment A, TMemorySegment B);
-
-    // Compare for equality
-    TBool AreEqual(TMemorySegment A, TMemorySegment B);
 
     // Fill memory span with zero byte
     void ZeroMem(TMemorySegment MemSeg);
@@ -118,4 +137,5 @@ namespace me_MemorySegment
 /*
   2024 # # # # # # # # # # # # # # # # #
   2025-08-22
+  2025-08-24
 */
