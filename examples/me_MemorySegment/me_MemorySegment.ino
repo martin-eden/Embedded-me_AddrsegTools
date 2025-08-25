@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-22
+  Last mod.: 2025-08-25
 */
 
 /*
@@ -85,7 +85,7 @@ void PrintByteContents(
 
   Console.Write("Byte-Contents (");
 
-  while (Rator.GetNext(&Addr))
+  while (Rator.GetNextAddr(&Addr))
   {
     Unit = *(TUnit *) Addr;
     Console.Print(Unit);
