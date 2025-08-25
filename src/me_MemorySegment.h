@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-24
+  Last mod.: 2025-08-25
 */
 
 /*
@@ -66,7 +66,7 @@ namespace me_MemorySegment
     public:
       TBool Init(TMemorySegment Segment);
 
-      TBool GetNext(TAddress * Address);
+      TBool GetNextAddr(TAddress * Address);
 
     private:
       TAddress MaxAddr = 0;
@@ -138,4 +138,5 @@ namespace me_MemorySegment
   2024 # # # # # # # # # # # # # # # # #
   2025-08-22
   2025-08-24
+  2025-08-25
 */

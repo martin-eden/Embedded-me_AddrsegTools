@@ -67,7 +67,7 @@ TBool TSegmentIterator::Init(
 
   It fails when address is beyond segment.
 */
-TBool TSegmentIterator::GetNext(
+TBool TSegmentIterator::GetNextAddr(
   TAddress * Address
 )
 {
