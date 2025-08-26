@@ -59,8 +59,13 @@ void Freetown::ZeroMem(
   TMemorySegment MemSeg
 )
 {
-  for (TUint_2 Offset = 0; Offset < MemSeg.Size; ++Offset)
-    MemSeg.Bytes[Offset] = 0;
+  me_Streams::TZeroesInputStream ZeroesInputStream;
+  me_WorkMemory::TOutputStream OutputStream;
+
+  if (!OutputStream.Init(MemSeg))
+    return;
+
+  me_Streams::CopyStreamTo(&ZeroesInputStream, &OutputStream);
 }
 
 /*
