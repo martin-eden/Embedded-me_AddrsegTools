@@ -50,7 +50,7 @@ namespace me_MemorySegment
   };
 
   /*
-    Self functions for memory segment
+    Unary functions for memory segment
   */
 
   // Validity check
@@ -106,6 +106,12 @@ namespace me_MemorySegment
 
   namespace Freetown
   {
+    // Fill memory span with zero byte
+    void ZeroMem(TMemorySegment MemSeg);
+
+    // Copy data to another segment
+    void CopyMemTo(TMemorySegment Dest, TMemorySegment Src);
+
     // Reserve block of memory. Zeroes after allocation
     TBool Reserve(TMemorySegment * MemSeg, TUint_2 Size);
 
@@ -117,12 +123,6 @@ namespace me_MemorySegment
 
     // Represent address and size args as record
     TMemorySegment FromAddrSize(TAddress Addr, TUint_2 Size);
-
-    // Fill memory span with zero byte
-    void ZeroMem(TMemorySegment MemSeg);
-
-    // Copy data to another segment
-    void CopyMemTo(TMemorySegment Dest, TMemorySegment Src);
   }
 }
 
