@@ -8,6 +8,8 @@
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
+#include <me_Streams.h>
+#include <me_WorkMemory.h>
 
 using namespace me_MemorySegment;
 
@@ -99,33 +101,29 @@ TBool me_MemorySegment::AreCompatible(
 /*
   Compare for data equality
 
-  Segments must not intersect.
+  We do not provide additional checks for intersection.
+
+  These two segments will be considered equal:
+
+    ~~~
+    ABABA
+      ~~~
 */
 TBool me_MemorySegment::AreEqual(
-  TMemorySegment A,
-  TMemorySegment B
+  TMemorySegment A_Seg,
+  TMemorySegment B_Seg
 )
 {
-  if (!IsValid(A))
+  me_WorkMemory::TInputStream A_Stream;
+  me_WorkMemory::TInputStream B_Stream;
+
+  if (!A_Stream.Init(A_Seg))
     return false;
 
-  if (!IsValid(B))
+  if (!B_Stream.Init(B_Seg))
     return false;
 
-  if (IsSameRec(A, B))
-    return true;
-
-  if (!AreCompatible(A, B))
-    return false;
-
-  // Assert: Segments are same size and do not intersect
-
-  // Compare data
-  for (TUint_2 Offset = 0; Offset < A.Size; ++Offset)
-    if (A.Bytes[Offset] != B.Bytes[Offset])
-      return false;
-
-  return true;
+  return me_Streams::StreamsAreEqual(&A_Stream, &B_Stream);
 }
 
 /*
