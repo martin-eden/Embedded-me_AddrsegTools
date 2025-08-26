@@ -20,6 +20,15 @@
   It's base datatype for all variable-length data.
 */
 
+/*
+  REWORK IN PROGRESS
+
+  It's early module written to isolate memory modifications code.
+  We don't like <.Bytes> hack.
+  We want to use [me_WorkMemory] for memory modifications
+  (which was written lot later).
+*/
+
 #pragma once
 
 #include <me_BaseTypes.h>
