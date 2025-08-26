@@ -20,15 +20,6 @@
   It's base datatype for all variable-length data.
 */
 
-/*
-  REWORK IN PROGRESS
-
-  It's early module written to isolate memory modifications code.
-  We don't like <.Bytes> hack.
-  We want to use [me_WorkMemory] for memory modifications
-  (which was written lot later).
-*/
-
 #pragma once
 
 #include <me_BaseTypes.h>
@@ -40,12 +31,7 @@ namespace me_MemorySegment
   */
   struct TMemorySegment
   {
-    union
-    {
-      TAddress Addr = 0;
-      // "Bytes" provides array access to memory at "Addr"
-      TUnit * Bytes;
-    };
+    TAddress Addr = 0;
     TUint_2 Size = 0;
   };
 
@@ -142,7 +128,7 @@ namespace me_MemorySegment
         \
         me_MemorySegment::TMemorySegment ProgmemSeg = \
           { \
-            { .Addr = (TAddress) ProgmemData }, \
+            .Addr = (TAddress) ProgmemData, \
             .Size = sizeof(ProgmemData) - 1 \
           }; \
         ProgmemSeg; \
