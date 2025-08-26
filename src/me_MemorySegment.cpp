@@ -35,7 +35,7 @@ void me_MemorySegment::Invalidate(
 }
 
 /*
-  Get end address
+  Get end address. Segment MUST be valid
 */
 TAddress me_MemorySegment::GetEndAddr(
   TMemorySegment Seg
@@ -43,6 +43,149 @@ TAddress me_MemorySegment::GetEndAddr(
 {
   return (Seg.Addr + Seg.Size - 1);
 }
+
+/*
+  Check that segments are valid and have same size
+*/
+TBool me_MemorySegment::IsSameSize(
+  TMemorySegment A,
+  TMemorySegment B
+)
+{
+  return
+    IsValid(A) &&
+    IsValid(B) &&
+    (A.Size == B.Size);
+}
+
+/*
+  Check that record fields are same
+*/
+TBool me_MemorySegment::IsSameRec(
+  TMemorySegment A,
+  TMemorySegment B
+)
+{
+  return
+    (A.Size == B.Size) &&
+    (A.Addr == B.Addr);
+}
+
+/*
+  Compatibility check
+
+  Segments are compatible if they are same size and do no intersect.
+*/
+TBool me_MemorySegment::AreCompatible(
+  TMemorySegment A,
+  TMemorySegment B
+)
+{
+  if (!IsValid(A))
+    return false;
+
+  if (!IsValid(B))
+    return false;
+
+  if (A.Size != B.Size)
+    return false;
+
+  if (Intersects(A, B))
+    return false;
+
+  return true;
+}
+
+/*
+  Compare for data equality
+
+  Segments must not intersect.
+*/
+TBool me_MemorySegment::AreEqual(
+  TMemorySegment A,
+  TMemorySegment B
+)
+{
+  if (!IsValid(A))
+    return false;
+
+  if (!IsValid(B))
+    return false;
+
+  if (IsSameRec(A, B))
+    return true;
+
+  if (!AreCompatible(A, B))
+    return false;
+
+  // Assert: Segments are same size and do not intersect
+
+  // Compare data
+  for (TUint_2 Offset = 0; Offset < A.Size; ++Offset)
+    if (A.Bytes[Offset] != B.Bytes[Offset])
+      return false;
+
+  return true;
+}
+
+/*
+  Return true if segments intersect
+*/
+TBool me_MemorySegment::Intersects(
+  TMemorySegment A,
+  TMemorySegment B
+)
+{
+  if (!IsValid(A))
+    return false;
+
+  if (!IsValid(B))
+    return false;
+
+  // A starts before B
+  if (A.Addr < B.Addr)
+  {
+    if (GetEndAddr(A) < B.Addr)
+      return false;
+  }
+  // A starts after B
+  else
+  {
+    if (GetEndAddr(B) < A.Addr)
+      return false;
+  }
+
+  return true;
+}
+
+/*
+  Check for belonging
+
+  Return true if segment A is inside segment B.
+
+  Empty segment doesn't belong to anything
+*/
+TBool me_MemorySegment::IsInside(
+  TMemorySegment A,
+  TMemorySegment B
+)
+{
+  if (!IsValid(A))
+    return false;
+
+  if (!IsValid(B))
+    return false;
+
+  if (A.Addr < B.Addr)
+    return false;
+
+  if (GetEndAddr(A) > GetEndAddr(B))
+    return false;
+
+  return true;
+}
+
+// ( Segment iterator
 
 /*
   Setup segment iterator
@@ -80,6 +223,8 @@ TBool TSegmentIterator::GetNextAddr(
 
   return true;
 }
+
+// )
 
 /*
   2024 # # # # # # # # # # #

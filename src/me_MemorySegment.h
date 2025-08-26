@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-25
+  Last mod.: 2025-08-26
 */
 
 /*
@@ -54,6 +54,28 @@ namespace me_MemorySegment
   TAddress GetEndAddr(TMemorySegment Seg);
 
   /*
+    Binary functions for memory segments
+  */
+
+  // Same size check
+  TBool IsSameSize(TMemorySegment A, TMemorySegment B);
+
+  // Fields equality check
+  TBool IsSameRec(TMemorySegment A, TMemorySegment B);
+
+  // Compatibility check
+  TBool AreCompatible(TMemorySegment A, TMemorySegment B);
+
+  // Data equality check
+  TBool AreEqual(TMemorySegment A, TMemorySegment B);
+
+  // Return true if segments intersect
+  TBool Intersects(TMemorySegment A, TMemorySegment B);
+
+  // Return true if segment A is inside segment B
+  TBool IsInside(TMemorySegment A, TMemorySegment B);
+
+  /*
     Segment iterator
 
     Main use it to avoid writing for's. For writing while's instead.
@@ -75,15 +97,6 @@ namespace me_MemorySegment
 
   namespace Freetown
   {
-    // Fields equality check
-    TBool IsSameRec(TMemorySegment A, TMemorySegment B);
-
-    // Compatibility check
-    TBool AreCompatible(TMemorySegment A, TMemorySegment B);
-
-    // Data equality check
-    TBool AreEqual(TMemorySegment A, TMemorySegment B);
-
     // Reserve block of memory. Zeroes after allocation
     TBool Reserve(TMemorySegment * MemSeg, TUint_2 Size);
 
@@ -96,17 +109,11 @@ namespace me_MemorySegment
     // Represent address and size args as record
     TMemorySegment FromAddrSize(TAddress Addr, TUint_2 Size);
 
-    // Return true if segments intersect
-    TBool Intersects(TMemorySegment A, TMemorySegment B);
-
-    // Return true if segment A is inside segment B
-    TBool IsInside(TMemorySegment A, TMemorySegment B);
-
     // Fill memory span with zero byte
     void ZeroMem(TMemorySegment MemSeg);
 
     // Copy data to another segment
-    TBool CopyMemTo(TMemorySegment Dest, TMemorySegment Src);
+    void CopyMemTo(TMemorySegment Dest, TMemorySegment Src);
   }
 }
 
@@ -139,4 +146,5 @@ namespace me_MemorySegment
   2025-08-22
   2025-08-24
   2025-08-25
+  2025-08-26
 */

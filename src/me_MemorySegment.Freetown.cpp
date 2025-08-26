@@ -30,76 +30,6 @@ TMemorySegment Freetown::FromAddrSize(
 }
 
 /*
-  Check that record fields are same
-*/
-TBool Freetown::IsSameRec(
-  TMemorySegment A,
-  TMemorySegment B
-)
-{
-  return
-    (A.Size == B.Size) &&
-    (A.Addr == B.Addr);
-}
-
-/*
-  Compatibility check
-
-  Segments are compatible if they are same size and do no intersect.
-*/
-TBool Freetown::AreCompatible(
-  TMemorySegment A,
-  TMemorySegment B
-)
-{
-  if (!IsValid(A))
-    return false;
-
-  if (!IsValid(B))
-    return false;
-
-  if (A.Size != B.Size)
-    return false;
-
-  if (Intersects(A, B))
-    return false;
-
-  return true;
-}
-
-/*
-  Compare for data equality
-
-  Segments must not intersect.
-*/
-TBool Freetown::AreEqual(
-  TMemorySegment A,
-  TMemorySegment B
-)
-{
-  if (!IsValid(A))
-    return false;
-
-  if (!IsValid(B))
-    return false;
-
-  if (IsSameRec(A, B))
-    return true;
-
-  if (!AreCompatible(A, B))
-    return false;
-
-  // Assert: Segments are same size and do not intersect
-
-  // Compare data
-  for (TUint_2 Offset = 0; Offset < A.Size; ++Offset)
-    if (A.Bytes[Offset] != B.Bytes[Offset])
-      return false;
-
-  return true;
-}
-
-/*
   Fill memory span with zero byte
 */
 void Freetown::ZeroMem(
@@ -174,85 +104,22 @@ TMemorySegment Freetown::FromAsciiz(
 }
 
 /*
-  Check for belonging
-
-  Return true if segment A is inside segment B.
-
-  Empty segment doesn't belong to anything
-*/
-TBool Freetown::IsInside(
-  TMemorySegment A,
-  TMemorySegment B
-)
-{
-  if (!IsValid(A))
-    return false;
-
-  if (!IsValid(B))
-    return false;
-
-  if (A.Addr < B.Addr)
-    return false;
-
-  if (GetEndAddr(A) > GetEndAddr(B))
-    return false;
-
-  return true;
-}
-
-/*
-  Return true if segments intersect
-*/
-TBool Freetown::Intersects(
-  TMemorySegment A,
-  TMemorySegment B
-)
-{
-  if (!IsValid(A))
-    return false;
-
-  if (!IsValid(B))
-    return false;
-
-  // A starts before B
-  if (A.Addr < B.Addr)
-  {
-    if (GetEndAddr(A) < B.Addr)
-      return false;
-  }
-  // A starts after B
-  else
-  {
-    if (GetEndAddr(B) < A.Addr)
-      return false;
-  }
-
-  return true;
-}
-
-/*
   Copy data to another segment
-
-  Segments must be compatible (same size and do no intersect).
 */
-TBool Freetown::CopyMemTo(
+void Freetown::CopyMemTo(
   TMemorySegment Dest,
   TMemorySegment Src
 )
 {
-  if (!IsValid(Src))
-    return false;
+  TUint_2 MinSize;
 
-  if (!IsValid(Dest))
-    return false;
+  if (Src.Size < Dest.Size)
+    MinSize = Src.Size;
+  else
+    MinSize = Dest.Size;
 
-  if (!AreCompatible(Src, Dest))
-    return false;
-
-  for (TUint_2 Offset = 0; Offset < Src.Size; ++Offset)
+  for (TUint_2 Offset = 0; Offset < MinSize; ++Offset)
     Dest.Bytes[Offset] = Src.Bytes[Offset];
-
-  return true;
 }
 
 /*
