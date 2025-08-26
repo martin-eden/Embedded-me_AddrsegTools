@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-25
+  Last mod.: 2025-08-26
 */
 
 /*
@@ -173,11 +173,7 @@ void RunTest()
     /*
       CopyMemTo(): Copy data to another segment
     */
-    if (!CopyMemTo(DestData, SourceData))
-    {
-      Console.Print("Failed to copy data.");
-      return;
-    }
+    CopyMemTo(DestData, SourceData);
 
     PrintSegmentDetails("CopyMemTo", DestData);
 
