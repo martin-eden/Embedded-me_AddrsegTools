@@ -33,6 +33,26 @@ TMemorySegment Freetown::FromAddrSize(
 }
 
 /*
+  Copy data to another segment
+*/
+void Freetown::CopyMemTo(
+  TMemorySegment Dest,
+  TMemorySegment Src
+)
+{
+  me_WorkMemory::TInputStream InputStream;
+  me_WorkMemory::TOutputStream OutputStream;
+
+  if (!InputStream.Init(Src))
+    return;
+
+  if (!OutputStream.Init(Dest))
+    return;
+
+  me_Streams::CopyStreamTo(&InputStream, &OutputStream);
+}
+
+/*
   Fill memory span with zero byte
 */
 void Freetown::ZeroMem(
@@ -104,26 +124,6 @@ TMemorySegment Freetown::FromAsciiz(
   me_Asciiz::GetLength_Workmem(&Result.Size, Asciiz);
 
   return Result;
-}
-
-/*
-  Copy data to another segment
-*/
-void Freetown::CopyMemTo(
-  TMemorySegment Dest,
-  TMemorySegment Src
-)
-{
-  me_WorkMemory::TInputStream InputStream;
-  me_WorkMemory::TOutputStream OutputStream;
-
-  if (!InputStream.Init(Src))
-    return;
-
-  if (!OutputStream.Init(Dest))
-    return;
-
-  me_Streams::CopyStreamTo(&InputStream, &OutputStream);
 }
 
 /*
