@@ -2,13 +2,16 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-24
+  Last mod.: 2025-08-26
 */
 
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
 #include <me_Asciiz.h>
+#include <me_Streams.h>
+#include <me_WorkMemory.h>
+
 #include <stdlib.h> // malloc(), free()
 
 using namespace me_MemorySegment;
@@ -111,18 +114,20 @@ void Freetown::CopyMemTo(
   TMemorySegment Src
 )
 {
-  TUint_2 MinSize;
+  me_WorkMemory::TInputStream InputStream;
+  me_WorkMemory::TOutputStream OutputStream;
 
-  if (Src.Size < Dest.Size)
-    MinSize = Src.Size;
-  else
-    MinSize = Dest.Size;
+  if (!InputStream.Init(Src))
+    return;
 
-  for (TUint_2 Offset = 0; Offset < MinSize; ++Offset)
-    Dest.Bytes[Offset] = Src.Bytes[Offset];
+  if (!OutputStream.Init(Dest))
+    return;
+
+  me_Streams::CopyStreamTo(&InputStream, &OutputStream);
 }
 
 /*
   2024 # # # # # # # # # # #
   2025-08-24
+  2025-08-26
 */
