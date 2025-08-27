@@ -47,20 +47,6 @@ TAddress me_MemorySegment::GetEndAddr(
 }
 
 /*
-  Check that segments are valid and have same size
-*/
-TBool me_MemorySegment::IsSameSize(
-  TAddressSegment A,
-  TAddressSegment B
-)
-{
-  return
-    IsValid(A) &&
-    IsValid(B) &&
-    (A.Size == B.Size);
-}
-
-/*
   Compare for data equality
 
   We do not provide additional checks for intersection.

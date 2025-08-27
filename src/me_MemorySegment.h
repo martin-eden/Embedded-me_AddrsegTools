@@ -44,9 +44,6 @@ namespace me_MemorySegment
     Binary functions for memory segments
   */
 
-  // Same size check
-  TBool IsSameSize(TAddressSegment A, TAddressSegment B);
-
   // Data equality check
   TBool AreEqual(TAddressSegment A, TAddressSegment B);
 
