@@ -110,6 +110,9 @@ TBool TSegmentIterator::Init(
   TAddressSegment Segment
 )
 {
+  if (!IsValid(Segment))
+    return false;
+
   return TAddressIterator::Init(Segment.Addr, GetEndAddr(Segment));
 }
 
