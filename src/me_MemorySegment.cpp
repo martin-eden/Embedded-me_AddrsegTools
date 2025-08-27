@@ -61,19 +61,6 @@ TBool me_MemorySegment::IsSameSize(
 }
 
 /*
-  Check that record fields are same
-*/
-TBool me_MemorySegment::IsSameRec(
-  TAddressSegment A,
-  TAddressSegment B
-)
-{
-  return
-    (A.Size == B.Size) &&
-    (A.Addr == B.Addr);
-}
-
-/*
   Compare for data equality
 
   We do not provide additional checks for intersection.
