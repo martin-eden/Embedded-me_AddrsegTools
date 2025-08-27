@@ -202,20 +202,35 @@ TBool TSegmentIterator::Init(
 }
 
 /*
-  Get next address from iterator
-
-  On fail it returns false.
-
-  It fails when address is beyond segment.
+  Check that iteration is not complete
 */
-TBool TSegmentIterator::GetNextAddr(
+TBool TSegmentIterator::IsValidState()
+{
+  return (CurrentAddr <= MaxAddr);
+}
+
+/*
+  Get current address
+*/
+TBool TSegmentIterator::GetAddr(
   TAddress * Address
 )
 {
-  if (CurrentAddr > MaxAddr)
+  if (!IsValidState())
     return false;
 
   *Address = CurrentAddr;
+
+  return true;
+}
+
+/*
+  Move to next address
+*/
+TBool TSegmentIterator::AdvanceAddr()
+{
+  if (!IsValidState())
+    return false;
 
   ++CurrentAddr;
 
@@ -226,4 +241,5 @@ TBool TSegmentIterator::GetNextAddr(
 
 /*
   2024 # # # # # # # # # # #
+  2025-08-07
 */

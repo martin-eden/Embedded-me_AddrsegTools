@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-26
+  Last mod.: 2025-08-27
 */
 
 /*
@@ -23,6 +23,7 @@
 #pragma once
 
 #include <me_BaseTypes.h>
+#include <me_BaseInterfaces.h>
 
 namespace me_MemorySegment
 {
@@ -71,23 +72,21 @@ namespace me_MemorySegment
   TBool IsInside(TMemorySegment A, TMemorySegment B);
 
   /*
-    Segment iterator
-
-    Main use it to avoid writing for's. For writing while's instead.
-
-    Init() it with some memory segment. Then call GetNext()
-    to get address. Until GetNext() fails.
+    Memory segment iterator
   */
-  class TSegmentIterator
+  class TSegmentIterator : public IAddressIterator
   {
     public:
       TBool Init(TMemorySegment Segment);
 
-      TBool GetNextAddr(TAddress * Address);
+      TBool GetAddr(TAddress * Address) override;
+      TBool AdvanceAddr() override;
 
     private:
       TAddress MaxAddr = 0;
       TAddress CurrentAddr = 1;
+
+      TBool IsValidState();
   };
 
   namespace Freetown
@@ -142,4 +141,5 @@ namespace me_MemorySegment
   2025-08-24
   2025-08-25
   2025-08-26
+  2025-08-27
 */
