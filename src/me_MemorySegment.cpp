@@ -37,9 +37,11 @@ void me_MemorySegment::Invalidate(
 }
 
 /*
-  Get end address. Segment MUST be valid
+  [Internal] Get end address
+
+  Segment MUST be valid
 */
-TAddress me_MemorySegment::GetEndAddr(
+TAddress GetEndAddr(
   TAddressSegment Seg
 )
 {

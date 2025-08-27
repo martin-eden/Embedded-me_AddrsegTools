@@ -37,9 +37,6 @@ namespace me_MemorySegment
   // Invalidation
   void Invalidate(TAddressSegment * Seg);
 
-  // Get last address helper
-  TAddress GetEndAddr(TAddressSegment Seg);
-
   /*
     Binary functions for memory segments
   */
