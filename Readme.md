@@ -1,53 +1,26 @@
-# What
+## What
 
-(2024-05/2024-06, 2024-09/2024-10, 2024-12)
+(2024)
 
-Arduino library describing memory segment.
+Arduino library to work with memory segment.
 
 
 ## Design
 
-Memory segment is a range of memory addresses.
+We have structure for variable-length data:
 
 ```C++
-struct TMemorySegment
+struct TAddressSegment
 {
-  union
-  {
-    TUint_2 Addr = 0;
-    // "Bytes" provides array access to memory at "Addr"
-    TUint_1 * Bytes;
-  };
+  TAddress Addr = 0;
   TUint_2 Size = 0;
 };
 ```
 
-This structure is our type for variable-length data in RAM.
+Typically this data is in RAM, but may also be in Flash or EEPROM.
 
-### `.Bytes`
-
-`Bytes` field is a sort of compiler's hack. It tells compiler that
-given address is pointer to byte. And C++ is always happy to treat
-anything as array.
-
-For example let's divide value in register R3 by 2 (just for example):
-
-```C++
-TMemorySegment Registers;
-Resisters.Addr = 0;
-Registers.Size = 32;
-
-Registers.Bytes[3] = Registers.Bytes[3] / 2;
-```
-
-This works while segment describes span in RAM. (Not in flash or in EEPROM
-for example.)
-
-
-## Uses
-
-Actually this module became like new base type and widely used
-by my other libraries.
+"Mission" of this module is provide useful functions to work with
+data in RAM.
 
 
 ## Reference output
@@ -80,8 +53,8 @@ by my other libraries.
 
 ## Code
 
-* [Example][Example]
 * [Interface][Interface]
+* [Example][Example]
 * [Implementation][Implementation]
 * [Design notes][Design notes]
 
@@ -102,8 +75,9 @@ Easy way is to clone [GetLibs][GetLibs] repo and run it's code.
 * [My other embedded C++ libraries][Embedded]
 * [My other repositories][Repos]
 
-[Example]: examples/me_MemorySegment/me_MemorySegment.ino
+
 [Interface]: src/me_MemorySegment.h
+[Example]: examples/me_MemorySegment/me_MemorySegment.ino
 [Implementation]: src/me_MemorySegment.cpp
 [Design notes]: extras/Design%20notes.txt
 
