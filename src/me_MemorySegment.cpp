@@ -19,7 +19,7 @@ using namespace me_MemorySegment;
   Segments with zero size are not valid.
 */
 TBool me_MemorySegment::IsValid(
-  TMemorySegment Seg
+  TAddressSegment Seg
 )
 {
   return (Seg.Size != 0);
@@ -29,7 +29,7 @@ TBool me_MemorySegment::IsValid(
   Invalidate segment
 */
 void me_MemorySegment::Invalidate(
-  TMemorySegment * Seg
+  TAddressSegment * Seg
 )
 {
   Seg->Addr = 0;
@@ -40,7 +40,7 @@ void me_MemorySegment::Invalidate(
   Get end address. Segment MUST be valid
 */
 TAddress me_MemorySegment::GetEndAddr(
-  TMemorySegment Seg
+  TAddressSegment Seg
 )
 {
   return (Seg.Addr + Seg.Size - 1);
@@ -50,8 +50,8 @@ TAddress me_MemorySegment::GetEndAddr(
   Check that segments are valid and have same size
 */
 TBool me_MemorySegment::IsSameSize(
-  TMemorySegment A,
-  TMemorySegment B
+  TAddressSegment A,
+  TAddressSegment B
 )
 {
   return
@@ -64,8 +64,8 @@ TBool me_MemorySegment::IsSameSize(
   Check that record fields are same
 */
 TBool me_MemorySegment::IsSameRec(
-  TMemorySegment A,
-  TMemorySegment B
+  TAddressSegment A,
+  TAddressSegment B
 )
 {
   return
@@ -79,8 +79,8 @@ TBool me_MemorySegment::IsSameRec(
   Segments are compatible if they are same size and do no intersect.
 */
 TBool me_MemorySegment::AreCompatible(
-  TMemorySegment A,
-  TMemorySegment B
+  TAddressSegment A,
+  TAddressSegment B
 )
 {
   if (!IsValid(A))
@@ -110,8 +110,8 @@ TBool me_MemorySegment::AreCompatible(
       ~~~
 */
 TBool me_MemorySegment::AreEqual(
-  TMemorySegment A_Seg,
-  TMemorySegment B_Seg
+  TAddressSegment A_Seg,
+  TAddressSegment B_Seg
 )
 {
   me_WorkMemory::TInputStream A_Stream;
@@ -130,8 +130,8 @@ TBool me_MemorySegment::AreEqual(
   Return true if segments intersect
 */
 TBool me_MemorySegment::Intersects(
-  TMemorySegment A,
-  TMemorySegment B
+  TAddressSegment A,
+  TAddressSegment B
 )
 {
   if (!IsValid(A))
@@ -164,8 +164,8 @@ TBool me_MemorySegment::Intersects(
   Empty segment doesn't belong to anything
 */
 TBool me_MemorySegment::IsInside(
-  TMemorySegment A,
-  TMemorySegment B
+  TAddressSegment A,
+  TAddressSegment B
 )
 {
   if (!IsValid(A))
@@ -189,7 +189,7 @@ TBool me_MemorySegment::IsInside(
   Setup segment iterator
 */
 TBool TSegmentIterator::Init(
-  TMemorySegment Segment
+  TAddressSegment Segment
 )
 {
   return TAddressIterator::Init(Segment.Addr, GetEndAddr(Segment));

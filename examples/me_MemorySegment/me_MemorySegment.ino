@@ -39,28 +39,28 @@ void loop()
 // --
 
 void PrintRawContents(
-  me_MemorySegment::TMemorySegment Memseg
+  TAddressSegment AddrSeg
 )
 {
   Console.Write("Contents ( ");
-  Console.Write(Memseg);
+  Console.Write(AddrSeg);
   Console.Write(" )");
 
   Console.EndLine();
 }
 
 void PrintWrappings(
-  me_MemorySegment::TMemorySegment Memseg
+  TAddressSegment AddrSeg
 )
 {
   Console.Write("Addr (");
-  Console.Print(Memseg.Addr);
+  Console.Print(AddrSeg.Addr);
   Console.Write(")");
 
   Console.Write(" ");
 
   Console.Write("Size (");
-  Console.Print(Memseg.Size);
+  Console.Print(AddrSeg.Size);
   Console.Write(")");
 
   Console.EndLine();
@@ -70,14 +70,14 @@ void PrintWrappings(
   Print contents using byte iterator
 */
 void PrintByteContents(
-  me_MemorySegment::TMemorySegment Memseg
+  TAddressSegment AddrSeg
 )
 {
   me_MemorySegment::TSegmentIterator Rator;
   TAddress Addr;
   TUnit Unit;
 
-  if (!Rator.Init(Memseg))
+  if (!Rator.Init(AddrSeg))
   {
     Console.Print("Failed to setup iterator.");
     return;
@@ -98,26 +98,23 @@ void PrintByteContents(
 
 void PrintSegmentDetails(
   TAsciiz Header,
-  me_MemorySegment::TMemorySegment Memseg
+  TAddressSegment AddrSeg
 )
 {
   Console.Print(Header);
 
   Console.Indent();
 
-  PrintWrappings(Memseg);
-  PrintRawContents(Memseg);
-  PrintByteContents(Memseg);
+  PrintWrappings(AddrSeg);
+  PrintRawContents(AddrSeg);
+  PrintByteContents(AddrSeg);
 
   Console.Unindent();
 }
 
 void RunTest()
 {
-  using
-    me_MemorySegment::TMemorySegment;
-
-  TMemorySegment Memseg;
+  TAddressSegment AddrSeg;
 
   {
     using
@@ -128,9 +125,9 @@ void RunTest()
 
       Note that function return segment not including zero byte.
     */
-    Memseg = FromAsciiz("ABC");
+    AddrSeg = FromAsciiz("ABC");
 
-    PrintSegmentDetails("FromAsciiz", Memseg);
+    PrintSegmentDetails("FromAsciiz", AddrSeg);
   }
 
   {
@@ -141,9 +138,9 @@ void RunTest()
       FromAddrSize(): Construct memory segment
     */
     // Stack pointer is at bytes 93 and 94
-    Memseg = FromAddrSize(93, 2);
+    AddrSeg = FromAddrSize(93, 2);
 
-    PrintSegmentDetails("FromAddrSize", Memseg);
+    PrintSegmentDetails("FromAddrSize", AddrSeg);
   }
 
   {
@@ -153,8 +150,8 @@ void RunTest()
       me_MemorySegment::Freetown::CopyMemTo,
       me_MemorySegment::Freetown::Release;
 
-    TMemorySegment SourceData = FromAsciiz("DATA");
-    TMemorySegment DestData;
+    TAddressSegment SourceData = FromAsciiz("DATA");
+    TAddressSegment DestData;
 
     Console.Print("( Reserve CopyMemTo Release )");
     Console.Indent();

@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-26
+  Last mod.: 2025-08-27
 */
 
 #include <me_MemorySegment.h>
@@ -19,12 +19,12 @@ using namespace me_MemorySegment;
 /*
   Represent address and size args as record
 */
-TMemorySegment Freetown::FromAddrSize(
+TAddressSegment Freetown::FromAddrSize(
   TAddress Addr,
   TUint_2 Size
 )
 {
-  TMemorySegment Result;
+  TAddressSegment Result;
 
   Result.Addr = Addr;
   Result.Size = Size;
@@ -36,7 +36,7 @@ TMemorySegment Freetown::FromAddrSize(
   Fill memory span with zero byte
 */
 void Freetown::ZeroMem(
-  TMemorySegment MemSeg
+  TAddressSegment MemSeg
 )
 {
   me_Streams::TZeroesInputStream ZeroesInputStream;
@@ -52,8 +52,8 @@ void Freetown::ZeroMem(
   Copy data to another segment
 */
 void Freetown::CopyMemTo(
-  TMemorySegment Dest,
-  TMemorySegment Src
+  TAddressSegment Dest,
+  TAddressSegment Src
 )
 {
   me_WorkMemory::TInputStream InputStream;
@@ -74,7 +74,7 @@ void Freetown::CopyMemTo(
   Zeroes data after allocation.
 */
 TBool Freetown::Reserve(
-  TMemorySegment * MemSeg,
+  TAddressSegment * MemSeg,
   TUint_2 Size
 )
 {
@@ -101,7 +101,7 @@ TBool Freetown::Reserve(
   Zeroes data before release.
 */
 void Freetown::Release(
-  TMemorySegment * MemSeg
+  TAddressSegment * MemSeg
 )
 {
   if (!IsValid(*MemSeg))
@@ -119,11 +119,11 @@ void Freetown::Release(
 
   Zero byte is not counted.
 */
-TMemorySegment Freetown::FromAsciiz(
+TAddressSegment Freetown::FromAsciiz(
   TAsciiz Asciiz
 )
 {
-  TMemorySegment Result;
+  TAddressSegment Result;
 
   Result.Addr = (TAddress) Asciiz;
   me_Asciiz::GetLength_Workmem(&Result.Size, Asciiz);

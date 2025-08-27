@@ -32,35 +32,35 @@ namespace me_MemorySegment
   */
 
   // Validity check
-  TBool IsValid(TMemorySegment Seg);
+  TBool IsValid(TAddressSegment Seg);
 
   // Invalidation
-  void Invalidate(TMemorySegment * Seg);
+  void Invalidate(TAddressSegment * Seg);
 
   // Get last address helper
-  TAddress GetEndAddr(TMemorySegment Seg);
+  TAddress GetEndAddr(TAddressSegment Seg);
 
   /*
     Binary functions for memory segments
   */
 
   // Same size check
-  TBool IsSameSize(TMemorySegment A, TMemorySegment B);
+  TBool IsSameSize(TAddressSegment A, TAddressSegment B);
 
   // Fields equality check
-  TBool IsSameRec(TMemorySegment A, TMemorySegment B);
+  TBool IsSameRec(TAddressSegment A, TAddressSegment B);
 
   // Compatibility check
-  TBool AreCompatible(TMemorySegment A, TMemorySegment B);
+  TBool AreCompatible(TAddressSegment A, TAddressSegment B);
 
   // Data equality check
-  TBool AreEqual(TMemorySegment A, TMemorySegment B);
+  TBool AreEqual(TAddressSegment A, TAddressSegment B);
 
   // Return true if segments intersect
-  TBool Intersects(TMemorySegment A, TMemorySegment B);
+  TBool Intersects(TAddressSegment A, TAddressSegment B);
 
   // Return true if segment A is inside segment B
-  TBool IsInside(TMemorySegment A, TMemorySegment B);
+  TBool IsInside(TAddressSegment A, TAddressSegment B);
 
   /*
     Address segment iterator
@@ -68,28 +68,28 @@ namespace me_MemorySegment
   class TSegmentIterator : public TAddressIterator
   {
     public:
-      TBool Init(TMemorySegment Segment);
+      TBool Init(TAddressSegment Segment);
   };
 
   namespace Freetown
   {
     // Fill memory span with zero byte
-    void ZeroMem(TMemorySegment MemSeg);
+    void ZeroMem(TAddressSegment MemSeg);
 
     // Copy data to another segment
-    void CopyMemTo(TMemorySegment Dest, TMemorySegment Src);
+    void CopyMemTo(TAddressSegment Dest, TAddressSegment Src);
 
     // Reserve block of memory. Zeroes after allocation
-    TBool Reserve(TMemorySegment * MemSeg, TUint_2 Size);
+    TBool Reserve(TAddressSegment * MemSeg, TUint_2 Size);
 
     // Release block of memory. Zeroes before release
-    void Release(TMemorySegment * MemSeg);
+    void Release(TAddressSegment * MemSeg);
 
     // Describe ASCIIZ structure as memory segment
-    TMemorySegment FromAsciiz(TAsciiz Asciiz);
+    TAddressSegment FromAsciiz(TAsciiz Asciiz);
 
     // Represent address and size args as record
-    TMemorySegment FromAddrSize(TAddress Addr, TUint_2 Size);
+    TAddressSegment FromAddrSize(TAddress Addr, TUint_2 Size);
   }
 }
 
@@ -107,7 +107,7 @@ namespace me_MemorySegment
       { \
         static const TUint_1 ProgmemData[] [[gnu::progmem]] = (Asciiz); \
         \
-        me_MemorySegment::TMemorySegment ProgmemSeg = \
+        TAddressSegment ProgmemSeg = \
           { \
             .Addr = (TAddress) ProgmemData, \
             .Size = sizeof(ProgmemData) - 1 \
