@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-12-17
+  Last mod.: 2025-08-27
 */
 
 #include <me_MemorySegment.h>
@@ -192,49 +192,7 @@ TBool TSegmentIterator::Init(
   TMemorySegment Segment
 )
 {
-  if (!IsValid(Segment))
-    return false;
-
-  CurrentAddr = Segment.Addr;
-  MaxAddr = GetEndAddr(Segment);
-
-  return true;
-}
-
-/*
-  Check that iteration is not complete
-*/
-TBool TSegmentIterator::IsValidState()
-{
-  return (CurrentAddr <= MaxAddr);
-}
-
-/*
-  Get current address
-*/
-TBool TSegmentIterator::GetAddr(
-  TAddress * Address
-)
-{
-  if (!IsValidState())
-    return false;
-
-  *Address = CurrentAddr;
-
-  return true;
-}
-
-/*
-  Move to next address
-*/
-TBool TSegmentIterator::AdvanceAddr()
-{
-  if (!IsValidState())
-    return false;
-
-  ++CurrentAddr;
-
-  return true;
+  return TAddressIterator::Init(Segment.Addr, GetEndAddr(Segment));
 }
 
 // )

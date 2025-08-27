@@ -74,19 +74,10 @@ namespace me_MemorySegment
   /*
     Memory segment iterator
   */
-  class TSegmentIterator : public IAddressIterator
+  class TSegmentIterator : public TAddressIterator
   {
     public:
       TBool Init(TMemorySegment Segment);
-
-      TBool GetAddr(TAddress * Address) override;
-      TBool AdvanceAddr() override;
-
-    private:
-      TAddress MaxAddr = 0;
-      TAddress CurrentAddr = 1;
-
-      TBool IsValidState();
   };
 
   namespace Freetown
