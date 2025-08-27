@@ -28,15 +28,6 @@
 namespace me_MemorySegment
 {
   /*
-    Memory span with byte granularity
-  */
-  struct TMemorySegment
-  {
-    TAddress Addr = 0;
-    TUint_2 Size = 0;
-  };
-
-  /*
     Unary functions for memory segment
   */
 
