@@ -75,36 +75,6 @@ TBool me_MemorySegment::AreEqual(
 }
 
 /*
-  Return true if segments intersect
-*/
-TBool me_MemorySegment::Intersects(
-  TAddressSegment A,
-  TAddressSegment B
-)
-{
-  if (!IsValid(A))
-    return false;
-
-  if (!IsValid(B))
-    return false;
-
-  // A starts before B
-  if (A.Addr < B.Addr)
-  {
-    if (GetEndAddr(A) < B.Addr)
-      return false;
-  }
-  // A starts after B
-  else
-  {
-    if (GetEndAddr(B) < A.Addr)
-      return false;
-  }
-
-  return true;
-}
-
-/*
   Check for belonging
 
   Return true if segment A is inside segment B.

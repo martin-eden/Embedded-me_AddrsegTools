@@ -47,9 +47,6 @@ namespace me_MemorySegment
   // Data equality check
   TBool AreEqual(TAddressSegment A, TAddressSegment B);
 
-  // Return true if segments intersect
-  TBool Intersects(TAddressSegment A, TAddressSegment B);
-
   // Return true if segment A is inside segment B
   TBool IsInside(TAddressSegment A, TAddressSegment B);
 
