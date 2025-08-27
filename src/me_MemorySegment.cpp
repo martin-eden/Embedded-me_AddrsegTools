@@ -74,31 +74,6 @@ TBool me_MemorySegment::IsSameRec(
 }
 
 /*
-  Compatibility check
-
-  Segments are compatible if they are same size and do no intersect.
-*/
-TBool me_MemorySegment::AreCompatible(
-  TAddressSegment A,
-  TAddressSegment B
-)
-{
-  if (!IsValid(A))
-    return false;
-
-  if (!IsValid(B))
-    return false;
-
-  if (A.Size != B.Size)
-    return false;
-
-  if (Intersects(A, B))
-    return false;
-
-  return true;
-}
-
-/*
   Compare for data equality
 
   We do not provide additional checks for intersection.

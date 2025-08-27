@@ -50,9 +50,6 @@ namespace me_MemorySegment
   // Fields equality check
   TBool IsSameRec(TAddressSegment A, TAddressSegment B);
 
-  // Compatibility check
-  TBool AreCompatible(TAddressSegment A, TAddressSegment B);
-
   // Data equality check
   TBool AreEqual(TAddressSegment A, TAddressSegment B);
 
