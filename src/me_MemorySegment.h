@@ -72,7 +72,7 @@ namespace me_MemorySegment
   TBool IsInside(TMemorySegment A, TMemorySegment B);
 
   /*
-    Memory segment iterator
+    Address segment iterator
   */
   class TSegmentIterator : public TAddressIterator
   {
