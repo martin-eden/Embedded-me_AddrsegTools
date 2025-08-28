@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-08-28
 */
 
 #include <me_MemorySegment.h>
@@ -14,15 +14,32 @@
 using namespace me_MemorySegment;
 
 /*
-  Check for existence
+  [Internal] Check that we can move address by N units
 
-  Segments with zero size are not valid.
+  Another descent madness because C don't do range checks.
 */
-TBool me_MemorySegment::IsValid(
-  TAddressSegment Seg
+TBool CanAdvance(
+  TAddress Address,
+  TSize NumUnits
 )
 {
-  return (Seg.Size != 0);
+  TAddress MaxNewAddress = TAddress_Max - NumUnits;
+
+  return (Address <= MaxNewAddress);
+}
+
+/*
+  Check that segment is valid
+
+  It means it has non-zero size and ends before max address.
+*/
+TBool me_MemorySegment::IsValid(
+  TAddressSegment AddrSeg
+)
+{
+  return
+    (AddrSeg.Size != 0) &&
+    CanAdvance(AddrSeg.Addr, AddrSeg.Size - 1);
 }
 
 /*
@@ -102,23 +119,6 @@ TBool me_MemorySegment::IsInside(
 
   return true;
 }
-
-// ( Segment iterator
-
-/*
-  Setup segment iterator
-*/
-TBool TSegmentIterator::Init(
-  TAddressSegment Segment
-)
-{
-  if (!IsValid(Segment))
-    return false;
-
-  return TAddressIterator::Init(Segment.Addr, GetEndAddr(Segment));
-}
-
-// )
 
 /*
   2024 # # # # # # # # # # #

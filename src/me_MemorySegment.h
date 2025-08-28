@@ -32,10 +32,10 @@ namespace me_MemorySegment
   */
 
   // Validity check
-  TBool IsValid(TAddressSegment Seg);
+  TBool IsValid(TAddressSegment AddrSeg);
 
   // Invalidation
-  void Invalidate(TAddressSegment * Seg);
+  void Invalidate(TAddressSegment * AddrSeg);
 
   /*
     Binary functions for address segments
@@ -46,15 +46,6 @@ namespace me_MemorySegment
 
   // Return true if segment A is inside segment B
   TBool IsInside(TAddressSegment A, TAddressSegment B);
-
-  /*
-    Address segment iterator
-  */
-  class TSegmentIterator : public TAddressIterator
-  {
-    public:
-      TBool Init(TAddressSegment Segment);
-  };
 
   namespace Freetown
   {
@@ -85,4 +76,5 @@ namespace me_MemorySegment
   2025-08-25
   2025-08-26
   2025-08-27
+  2025-08-28
 */
