@@ -1,13 +1,13 @@
 ## What
 
-(2024)
+(2024, 2025)
 
-Arduino library to work with memory segment.
+Tools for address segment.
 
 
 ## Design
 
-We have structure for variable-length data:
+Structure for variable-length data is defined in `[me_BaseTypes]` and is
 
 ```C++
 struct TAddressSegment
@@ -17,11 +17,18 @@ struct TAddressSegment
 };
 ```
 
-Typically this data is in RAM, but may also be in Flash or EEPROM.
+Typically this record describes data is in RAM, but it may also be
+in Flash or EEPROM.
 
-"Mission" of this module is provide useful functions to work with
-data in RAM.
 
+## History note
+
+This is the first important module. It was written before all other
+modules. Original scope was like "isolate array pointer functions".
+Currently scope is like "tools for address span record".
+
+So most of functions here are out of scope. We're working on this
+by thinking what to move and where and do we really need that stuff.
 
 ## Reference output
 
