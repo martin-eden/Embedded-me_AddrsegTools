@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-28
+  Last mod.: 2025-08-29
 */
 
 /*
@@ -63,9 +63,6 @@ namespace me_MemorySegment
 
     // Describe ASCIIZ structure as memory segment
     TAddressSegment FromAsciiz(TAsciiz Asciiz);
-
-    // Represent address and size args as record
-    TAddressSegment FromAddrSize(TAddress Addr, TUint_2 Size);
   }
 }
 
@@ -77,4 +74,5 @@ namespace me_MemorySegment
   2025-08-26
   2025-08-27
   2025-08-28
+  2025-08-29
 */

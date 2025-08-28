@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-28
+  Last mod.: 2025-08-29
 */
 
 #include <me_MemorySegment.h>
@@ -15,22 +15,6 @@
 #include <stdlib.h> // malloc(), free()
 
 using namespace me_MemorySegment;
-
-/*
-  Represent address and size args as record
-*/
-TAddressSegment Freetown::FromAddrSize(
-  TAddress Addr,
-  TUint_2 Size
-)
-{
-  TAddressSegment Result;
-
-  Result.Addr = Addr;
-  Result.Size = Size;
-
-  return Result;
-}
 
 /*
   Fill memory span with zero byte
@@ -88,7 +72,7 @@ TBool Freetown::Reserve(
   if (MallocAddr == 0)
     return false;
 
-  *MemSeg = FromAddrSize(MallocAddr, Size);
+  *MemSeg = { .Addr = MallocAddr, .Size = Size };
 
   ZeroMem(*MemSeg);
 
@@ -135,4 +119,5 @@ TAddressSegment Freetown::FromAsciiz(
   2024 # # # # # # # # # # #
   2025-08-24
   2025-08-26
+  2025-08-29
 */

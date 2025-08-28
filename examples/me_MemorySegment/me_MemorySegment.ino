@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-26
+  Last mod.: 2025-08-29
 */
 
 #include <me_MemorySegment.h>
@@ -52,7 +52,7 @@ void PrintByteContents(
 
   if (!Rator.Init(AddrSeg))
   {
-    Console.Print("Failed to setup iterator.");
+    Console.Print("Failed to setup iterator");
     return;
   }
 
@@ -90,18 +90,18 @@ void TestFixedSegment()
   TAddressSegment AddrSeg;
 
   /*
-    FromAddrSize(): Construct memory segment
+    Construct memory segment record
   */
 
   // Stack pointer is two bytes at 93
-  AddrSeg = me_MemorySegment::Freetown::FromAddrSize(93, 2);
+  AddrSeg = { .Addr = 93, .Size = 2 };
 
-  PrintSegmentDetails("FromAddrSize: stack pointer", AddrSeg);
+  PrintSegmentDetails("Stack pointer", AddrSeg);
 
   // Last addressable byte, describable but not existing
   AddrSeg = { .Addr = TAddress_Max, .Size = 1};
 
-  PrintSegmentDetails("FromAddrSize: last addressable byte", AddrSeg);
+  PrintSegmentDetails("Last addressable byte", AddrSeg);
 }
 
 void TestAsciiz()
@@ -132,7 +132,7 @@ void TestMemoryAllocator()
   */
   if (!me_MemorySegment::Freetown::Reserve(&DestData, SourceData.Size))
   {
-    Console.Print("No memory for temporary data.");
+    Console.Print("No memory for temporary data");
     return;
   }
 
