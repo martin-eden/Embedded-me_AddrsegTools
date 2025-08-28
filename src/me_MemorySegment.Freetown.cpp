@@ -2,14 +2,14 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-08-28
 */
 
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
 #include <me_Asciiz.h>
-#include <me_Streams.h>
+#include <me_StreamTools.h>
 #include <me_WorkMemory.h>
 
 #include <stdlib.h> // malloc(), free()
@@ -39,13 +39,13 @@ void Freetown::ZeroMem(
   TAddressSegment MemSeg
 )
 {
-  me_Streams::TZeroesInputStream ZeroesInputStream;
+  me_StreamTools::TZeroesInputStream ZeroesInputStream;
   me_WorkMemory::TOutputStream OutputStream;
 
   if (!OutputStream.Init(MemSeg))
     return;
 
-  me_Streams::CopyStreamTo(&ZeroesInputStream, &OutputStream);
+  me_StreamTools::CopyStreamTo(&ZeroesInputStream, &OutputStream);
 }
 
 /*
@@ -65,7 +65,7 @@ void Freetown::CopyMemTo(
   if (!OutputStream.Init(Dest))
     return;
 
-  me_Streams::CopyStreamTo(&InputStream, &OutputStream);
+  me_StreamTools::CopyStreamTo(&InputStream, &OutputStream);
 }
 
 /*

@@ -8,7 +8,7 @@
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
-#include <me_Streams.h>
+#include <me_StreamTools.h>
 #include <me_WorkMemory.h>
 
 using namespace me_MemorySegment;
@@ -90,7 +90,7 @@ TBool me_MemorySegment::AreEqual(
   if (!B_Stream.Init(B_Seg))
     return false;
 
-  return me_Streams::StreamsAreEqual(&A_Stream, &B_Stream);
+  return me_StreamTools::StreamsAreEqual(&A_Stream, &B_Stream);
 }
 
 /*
