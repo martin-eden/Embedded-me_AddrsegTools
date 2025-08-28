@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-08-28
 */
 
 /*
@@ -28,7 +28,7 @@
 namespace me_MemorySegment
 {
   /*
-    Unary functions for memory segment
+    Unary functions for address segment
   */
 
   // Validity check
@@ -38,7 +38,7 @@ namespace me_MemorySegment
   void Invalidate(TAddressSegment * Seg);
 
   /*
-    Binary functions for memory segments
+    Binary functions for address segments
   */
 
   // Data equality check
