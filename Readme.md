@@ -33,29 +33,33 @@ by thinking what to move and where and do we really need that stuff.
 ## Reference output
 
 ```
-[me_MemorySegment] Okay, we are here.
+( [me_MemorySegment] Test
   FromAsciiz
-    Addr ( 00372 ) Size ( 00003 )
+    Addr ( 00393 ) Size ( 00003 )
     Contents ( ABC )
-    Byte-Contents ( 065 066 067 )
-  FromAddrSize
+    Byte-Contents ( 065 066 067  )
+  Stack pointer
     Addr ( 00093 ) Size ( 00002 )
     Contents (  )
-    Byte-Contents ( 243 008 )
+    Byte-Contents ( 223 008  )
+  Last addressable byte
+    Addr ( 65535 ) Size ( 00001 )
+    Contents (  )
+    Byte-Contents ( )
   ( Reserve CopyMemTo Release )
     Reserve
-      Addr ( 00553 ) Size ( 00004 )
+      Addr ( 00564 ) Size ( 00004 )
       Contents (  )
-      Byte-Contents ( 000 000 000 000 )
+      Byte-Contents ( 000 000 000 000  )
     CopyMemTo
-      Addr ( 00553 ) Size ( 00004 )
+      Addr ( 00564 ) Size ( 00004 )
       Contents ( DATA )
-      Byte-Contents ( 068 065 084 065 )
+      Byte-Contents ( 068 065 084 065  )
     Release
       Addr ( 00000 ) Size ( 00000 )
       Contents (  )
-      Failed to setup iterator.
-[me_MemorySegment] Done.
+      Failed to setup iterator
+) Done
 ```
 
 ## Code
