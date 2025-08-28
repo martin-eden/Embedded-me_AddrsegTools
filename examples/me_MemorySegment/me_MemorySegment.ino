@@ -5,49 +5,11 @@
   Last mod.: 2025-08-26
 */
 
-/*
-  Demonstration of base functionality of memory segment:
-
-  * Create structure (FromAsciiz, FromAddrSize)
-  * Access (iterator)
-  * Copy (CopyMemTo)
-  * Manage memory (Reserve, Release)
-
-  See RunTest().
-*/
-
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
 #include <me_Console.h>
-
-void setup()
-{
-  Console.Init();
-
-  Console.Print("[me_MemorySegment] Okay, we are here.");
-  Console.Indent();
-  RunTest();
-  Console.Unindent();
-  Console.Print("[me_MemorySegment] Done.");
-}
-
-void loop()
-{
-}
-
-// --
-
-void PrintRawContents(
-  TAddressSegment AddrSeg
-)
-{
-  Console.Write("Contents ( ");
-  Console.Write(AddrSeg);
-  Console.Write(" )");
-
-  Console.EndLine();
-}
+#include <me_WorkMemory.h>
 
 void PrintWrappings(
   TAddressSegment AddrSeg
@@ -66,6 +28,17 @@ void PrintWrappings(
   Console.EndLine();
 }
 
+void PrintRawContents(
+  TAddressSegment AddrSeg
+)
+{
+  Console.Write("Contents ( ");
+  Console.Write(AddrSeg);
+  Console.Write(" )");
+
+  Console.EndLine();
+}
+
 /*
   Print contents using byte iterator
 */
@@ -73,7 +46,7 @@ void PrintByteContents(
   TAddressSegment AddrSeg
 )
 {
-  me_MemorySegment::TSegmentIterator Rator;
+  TAddressIterator Rator;
   TAddress Addr;
   TUnit Unit;
 
@@ -87,11 +60,11 @@ void PrintByteContents(
 
   while (Rator.GetNextAddr(&Addr))
   {
-    Unit = *(TUnit *) Addr;
-    Console.Print(Unit);
+    if (me_WorkMemory::GetByteFrom(&Unit, Addr))
+      Console.Print(Unit);
   }
 
-  Console.Write(")");
+  Console.Write(" )");
 
   Console.EndLine();
 }
@@ -112,83 +85,99 @@ void PrintSegmentDetails(
   Console.Unindent();
 }
 
-void RunTest()
+void TestFixedSegment()
 {
   TAddressSegment AddrSeg;
 
+  /*
+    FromAddrSize(): Construct memory segment
+  */
+
+  // Stack pointer is two bytes at 93
+  AddrSeg = me_MemorySegment::Freetown::FromAddrSize(93, 2);
+
+  PrintSegmentDetails("FromAddrSize: stack pointer", AddrSeg);
+
+  // Last addressable byte, describable but not existing
+  AddrSeg = { .Addr = TAddress_Max, .Size = 1};
+
+  PrintSegmentDetails("FromAddrSize: last addressable byte", AddrSeg);
+}
+
+void TestAsciiz()
+{
+  TAddressSegment AddrSeg;
+
+  /*
+    FromAsciiz(): Treat ASCIIZ as memory segment
+
+    Returned segment does not include zero byte.
+  */
+  AddrSeg = me_MemorySegment::Freetown::FromAsciiz("ABC");
+
+  PrintSegmentDetails("FromAsciiz", AddrSeg);
+}
+
+void TestMemoryAllocator()
+{
+  TAddressSegment SourceData =
+    me_MemorySegment::Freetown::FromAsciiz("DATA");
+  TAddressSegment DestData;
+
+  Console.Print("( Reserve CopyMemTo Release )");
+  Console.Indent();
+
+  /*
+    Reserve(): Allocate memory and zero data
+  */
+  if (!me_MemorySegment::Freetown::Reserve(&DestData, SourceData.Size))
   {
-    using
-      me_MemorySegment::Freetown::FromAsciiz;
-
-    /*
-      FromAsciiz(): Treat ASCIIZ as memory segment
-
-      Note that function return segment not including zero byte.
-    */
-    AddrSeg = FromAsciiz("ABC");
-
-    PrintSegmentDetails("FromAsciiz", AddrSeg);
+    Console.Print("No memory for temporary data.");
+    return;
   }
 
-  {
-    using
-      me_MemorySegment::Freetown::FromAddrSize;
+  PrintSegmentDetails("Reserve", DestData);
 
-    /*
-      FromAddrSize(): Construct memory segment
-    */
-    // Stack pointer is at bytes 93 and 94
-    AddrSeg = FromAddrSize(93, 2);
+  /*
+    CopyMemTo(): Copy data to another segment
+  */
+  me_MemorySegment::Freetown::CopyMemTo(DestData, SourceData);
 
-    PrintSegmentDetails("FromAddrSize", AddrSeg);
-  }
+  PrintSegmentDetails("CopyMemTo", DestData);
 
-  {
-    using
-      me_MemorySegment::Freetown::FromAsciiz,
-      me_MemorySegment::Freetown::Reserve,
-      me_MemorySegment::Freetown::CopyMemTo,
-      me_MemorySegment::Freetown::Release;
+  /*
+    Release(): Deallocate memory and zero data
+  */
+  me_MemorySegment::Freetown::Release(&DestData);
 
-    TAddressSegment SourceData = FromAsciiz("DATA");
-    TAddressSegment DestData;
+  PrintSegmentDetails("Release", DestData);
 
-    Console.Print("( Reserve CopyMemTo Release )");
-    Console.Indent();
+  Console.Unindent();
+}
 
-    /*
-      Reserve(): Allocate memory and zero data
-    */
-    if (!Reserve(&DestData, SourceData.Size))
-    {
-      Console.Print("No memory for temporary data.");
-      return;
-    }
+void RunTests()
+{
+  TestAsciiz();
+  TestFixedSegment();
+  TestMemoryAllocator();
+}
 
-    PrintSegmentDetails("Reserve", DestData);
+void setup()
+{
+  Console.Init();
 
-    /*
-      CopyMemTo(): Copy data to another segment
-    */
-    CopyMemTo(DestData, SourceData);
+  Console.Print("( [me_MemorySegment] Test");
+  Console.Indent();
+  RunTests();
+  Console.Unindent();
+  Console.Print(") Done");
+}
 
-    PrintSegmentDetails("CopyMemTo", DestData);
-
-    /*
-      Release(): Deallocate memory and zero data
-    */
-    Release(&DestData);
-
-    PrintSegmentDetails("Release", DestData);
-
-    Console.Unindent();
-  }
+void loop()
+{
 }
 
 /*
-  2024-05 # # # #
-  2024-06 #
-  2024-10 # # # #
-  2024-12-12
-  2024-12-15
+  2024-05 # # # # # # # # # # #
+  2025-08-28
 */
