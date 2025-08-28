@@ -47,6 +47,9 @@ namespace me_MemorySegment
   // Return true if segment A is inside segment B
   TBool IsInside(TAddressSegment A, TAddressSegment B);
 
+  // Describe ASCIIZ structure as memory segment
+  TAddressSegment FromAsciiz(TAsciiz Asciiz);
+
   namespace Freetown
   {
     // Fill memory span with zero byte
@@ -60,9 +63,6 @@ namespace me_MemorySegment
 
     // Release block of memory. Zeroes before release
     void Release(TAddressSegment * MemSeg);
-
-    // Describe ASCIIZ structure as memory segment
-    TAddressSegment FromAsciiz(TAsciiz Asciiz);
   }
 }
 

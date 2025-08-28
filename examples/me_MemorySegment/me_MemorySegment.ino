@@ -113,7 +113,7 @@ void TestAsciiz()
 
     Returned segment does not include zero byte.
   */
-  AddrSeg = me_MemorySegment::Freetown::FromAsciiz("ABC");
+  AddrSeg = me_MemorySegment::FromAsciiz("ABC");
 
   PrintSegmentDetails("FromAsciiz", AddrSeg);
 }
@@ -121,7 +121,7 @@ void TestAsciiz()
 void TestMemoryAllocator()
 {
   TAddressSegment SourceData =
-    me_MemorySegment::Freetown::FromAsciiz("DATA");
+    me_MemorySegment::FromAsciiz("DATA");
   TAddressSegment DestData;
 
   Console.Print("( Reserve CopyMemTo Release )");
