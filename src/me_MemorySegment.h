@@ -41,29 +41,11 @@ namespace me_MemorySegment
     Binary functions for address segments
   */
 
-  // Data equality check
-  TBool AreEqual(TAddressSegment A, TAddressSegment B);
-
   // Return true if segment A is inside segment B
   TBool IsInside(TAddressSegment A, TAddressSegment B);
 
   // Describe ASCIIZ structure as memory segment
   TAddressSegment FromAsciiz(TAsciiz Asciiz);
-
-  namespace Freetown
-  {
-    // Fill memory span with zero byte
-    void ZeroMem(TAddressSegment MemSeg);
-
-    // Copy data to another segment
-    void CopyMemTo(TAddressSegment Dest, TAddressSegment Src);
-
-    // Reserve block of memory. Zeroes after allocation
-    TBool Reserve(TAddressSegment * MemSeg, TUint_2 Size);
-
-    // Release block of memory. Zeroes before release
-    void Release(TAddressSegment * MemSeg);
-  }
 }
 
 /*

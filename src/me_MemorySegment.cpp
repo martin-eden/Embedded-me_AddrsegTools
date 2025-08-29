@@ -67,34 +67,6 @@ TAddress GetEndAddr(
 }
 
 /*
-  Compare for data equality
-
-  We do not provide additional checks for intersection.
-
-  These two segments will be considered equal:
-
-    ~~~
-    ABABA
-      ~~~
-*/
-TBool me_MemorySegment::AreEqual(
-  TAddressSegment A_Seg,
-  TAddressSegment B_Seg
-)
-{
-  me_WorkMemory::TInputStream A_Stream;
-  me_WorkMemory::TInputStream B_Stream;
-
-  if (!A_Stream.Init(A_Seg))
-    return false;
-
-  if (!B_Stream.Init(B_Seg))
-    return false;
-
-  return me_StreamTools::StreamsAreEqual(&A_Stream, &B_Stream);
-}
-
-/*
   Check for belonging
 
   Return true if segment A is inside segment B.

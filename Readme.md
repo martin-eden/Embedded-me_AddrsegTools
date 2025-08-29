@@ -92,11 +92,6 @@ Easy way is to clone [GetLibs][GetLibs] repo and run it's code.
 [Implementation]: src/me_MemorySegment.cpp
 [Design notes]: extras/Design%20notes.txt
 
-[me_ManagedMemory]: https://github.com/martin-eden/Embedded-me_ManagedMemory
-[me_List]: https://github.com/martin-eden/Embedded-me_List
-[me_Menu]: https://github.com/martin-eden/Embedded-me_Menu
-[me_RgbStripeConsole]: https://github.com/martin-eden/Embedded-me_RgbStripeConsole
-
 [GetLibs]: https://github.com/martin-eden/Embedded-Framework-GetLibs
 
 [Embedded]: https://github.com/martin-eden/Embedded_Crafts/tree/master/Parts
