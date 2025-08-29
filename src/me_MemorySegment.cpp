@@ -8,9 +8,6 @@
 #include <me_MemorySegment.h>
 
 #include <me_BaseTypes.h>
-#include <me_StreamTools.h>
-#include <me_WorkMemory.h>
-#include <me_Asciiz.h>
 
 using namespace me_MemorySegment;
 
@@ -94,23 +91,7 @@ TBool me_MemorySegment::IsInside(
 }
 
 /*
-  Represent ASCII structure as memory segment
-
-  Zero byte is not counted.
-*/
-TAddressSegment me_MemorySegment::FromAsciiz(
-  TAsciiz Asciiz
-)
-{
-  TAddressSegment Result;
-
-  Result.Addr = (TAddress) Asciiz;
-  me_Asciiz::GetLength_Workmem(&Result.Size, Asciiz);
-
-  return Result;
-}
-
-/*
   2024 # # # # # # # # # # #
   2025-08-07
+  2025-08-29
 */

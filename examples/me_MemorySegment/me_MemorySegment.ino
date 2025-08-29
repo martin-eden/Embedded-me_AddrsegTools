@@ -104,62 +104,9 @@ void TestFixedSegment()
   PrintSegmentDetails("Last addressable byte", AddrSeg);
 }
 
-void TestAsciiz()
-{
-  TAddressSegment AddrSeg;
-
-  /*
-    FromAsciiz(): Treat ASCIIZ as memory segment
-
-    Returned segment does not include zero byte.
-  */
-  AddrSeg = me_MemorySegment::FromAsciiz("ABC");
-
-  PrintSegmentDetails("FromAsciiz", AddrSeg);
-}
-
-void TestMemoryAllocator()
-{
-  TAddressSegment SourceData =
-    me_MemorySegment::FromAsciiz("DATA");
-  TAddressSegment DestData;
-
-  Console.Print("( Reserve CopyMemTo Release )");
-  Console.Indent();
-
-  /*
-    Reserve(): Allocate memory and zero data
-  */
-  if (!me_MemorySegment::Freetown::Reserve(&DestData, SourceData.Size))
-  {
-    Console.Print("No memory for temporary data");
-    return;
-  }
-
-  PrintSegmentDetails("Reserve", DestData);
-
-  /*
-    CopyMemTo(): Copy data to another segment
-  */
-  me_MemorySegment::Freetown::CopyMemTo(DestData, SourceData);
-
-  PrintSegmentDetails("CopyMemTo", DestData);
-
-  /*
-    Release(): Deallocate memory and zero data
-  */
-  me_MemorySegment::Freetown::Release(&DestData);
-
-  PrintSegmentDetails("Release", DestData);
-
-  Console.Unindent();
-}
-
 void RunTests()
 {
-  TestAsciiz();
   TestFixedSegment();
-  TestMemoryAllocator();
 }
 
 void setup()
@@ -180,4 +127,5 @@ void loop()
 /*
   2024-05 # # # # # # # # # # #
   2025-08-28
+  2025-08-29
 */

@@ -23,7 +23,6 @@
 #pragma once
 
 #include <me_BaseTypes.h>
-#include <me_BaseInterfaces.h>
 
 namespace me_MemorySegment
 {
@@ -43,9 +42,6 @@ namespace me_MemorySegment
 
   // Return true if segment A is inside segment B
   TBool IsInside(TAddressSegment A, TAddressSegment B);
-
-  // Describe ASCIIZ structure as memory segment
-  TAddressSegment FromAsciiz(TAsciiz Asciiz);
 }
 
 /*
