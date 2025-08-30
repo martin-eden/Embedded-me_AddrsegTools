@@ -1,15 +1,15 @@
-// Memory segment companion functions
+// Utility functions for address segment
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-29
+  Last mod.: 2025-08-30
 */
 
-#include <me_MemorySegment.h>
+#include <me_AddrsegTools.h>
 
 #include <me_BaseTypes.h>
 
-using namespace me_MemorySegment;
+using namespace me_AddrsegTools;
 
 /*
   [Internal] Check that we can move address by N units
@@ -31,7 +31,7 @@ TBool CanAdvance(
 
   It means it has non-zero size and ends before max address.
 */
-TBool me_MemorySegment::IsValid(
+TBool me_AddrsegTools::IsValid(
   TAddressSegment AddrSeg
 )
 {
@@ -43,7 +43,7 @@ TBool me_MemorySegment::IsValid(
 /*
   Invalidate segment
 */
-void me_MemorySegment::Invalidate(
+void me_AddrsegTools::Invalidate(
   TAddressSegment * Seg
 )
 {
@@ -64,27 +64,23 @@ TAddress GetEndAddr(
 }
 
 /*
-  Check for belonging
-
-  Return true if segment A is inside segment B.
-
-  Empty segment doesn't belong to anything
+  Check for nesting
 */
-TBool me_MemorySegment::IsInside(
-  TAddressSegment A,
-  TAddressSegment B
+TBool me_AddrsegTools::IsInside(
+  TAddressSegment InnerSeg,
+  TAddressSegment OuterSeg
 )
 {
-  if (!IsValid(A))
+  if (!IsValid(InnerSeg))
     return false;
 
-  if (!IsValid(B))
+  if (!IsValid(OuterSeg))
     return false;
 
-  if (A.Addr < B.Addr)
+  if (InnerSeg.Addr < OuterSeg.Addr)
     return false;
 
-  if (GetEndAddr(A) > GetEndAddr(B))
+  if (GetEndAddr(InnerSeg) > GetEndAddr(OuterSeg))
     return false;
 
   return true;
@@ -94,4 +90,5 @@ TBool me_MemorySegment::IsInside(
   2024 # # # # # # # # # # #
   2025-08-07
   2025-08-29
+  2025-08-30
 */
