@@ -5,7 +5,7 @@
 Tools for address segment.
 
 Original concept was _data segment in RAM_ and functions for it.
-Later code was split and now there is only functions for
+Later code was split and now here is only functions for
 _address segment_.
 
 
