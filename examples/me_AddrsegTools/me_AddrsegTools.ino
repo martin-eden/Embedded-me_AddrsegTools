@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-29
+  Last mod.: 2025-09-02
 */
 
 #include <me_AddrsegTools.h>
@@ -124,12 +124,60 @@ void TestIsInside()
   Console.Print("");
 }
 
+void TestChops()
+{
+  TAddressSegment OrigSeg = { .Addr = 101, .Size = 4 };
+  TAddressSegment ChoppedSeg;
+  TAddress CutAddr;
+
+  PrintSegmentDetails("Original segment", OrigSeg);
+
+  CutAddr = 101;
+
+  Console.Write("Cutting address");
+  Console.Print(CutAddr);
+
+  {
+    ChoppedSeg = OrigSeg;
+
+    if (!me_AddrsegTools::ChopLeftFrom(&ChoppedSeg, CutAddr))
+      Console.Print("ChopLeftFrom() failed");
+
+    PrintSegmentDetails("Left-chopped segment (keep cut)", ChoppedSeg);
+  }
+  {
+    ChoppedSeg = OrigSeg;
+
+    if (!me_AddrsegTools::ChopLeftAt(&ChoppedSeg, CutAddr))
+      Console.Print("ChopLeftAt() failed");
+
+    PrintSegmentDetails("Left-chopped segment (exclude cut)", ChoppedSeg);
+  }
+  {
+    ChoppedSeg = OrigSeg;
+
+    if (!me_AddrsegTools::ChopRightFrom(&ChoppedSeg, CutAddr))
+      Console.Print("ChopRightFrom() failed");
+
+    PrintSegmentDetails("Right-chopped segment (keep cut)", ChoppedSeg);
+  }
+  {
+    ChoppedSeg = OrigSeg;
+
+    if (!me_AddrsegTools::ChopRightAt(&ChoppedSeg, CutAddr))
+      Console.Print("ChopRightAt() failed");
+
+    PrintSegmentDetails("Right-chopped segment (exclude cut)", ChoppedSeg);
+  }
+}
+
 void RunTests()
 {
   TestFixedSegment();
   TestIsValid();
   TestInvalidate();
   TestIsInside();
+  TestChops();
 }
 
 void setup()
@@ -148,8 +196,7 @@ void loop()
 }
 
 /*
-  2024-05 # # # # # # # # # # #
-  2025-08-28
-  2025-08-29
-  2025-08-30
+  2024 # # # # # # # # # # #
+  2025 # # #
+  2025-09-02
 */

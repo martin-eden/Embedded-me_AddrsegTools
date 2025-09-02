@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-30
+  Last mod.: 2025-09-02
 */
 
 #pragma once
@@ -19,10 +19,26 @@ namespace me_AddrsegTools
 
   // Nesting check
   TBool IsInside(TAddressSegment InnerSeg, TAddressSegment OuterSeg);
+
+  // (Side selection
+
+  // Drop left part, keep address
+  TBool ChopLeftFrom(TAddressSegment * AddrSeg, TAddress Addr);
+
+  // Drop left part, exclude address
+  TBool ChopLeftAt(TAddressSegment * AddrSeg, TAddress Addr);
+
+  // Drop right part, keep address
+  TBool ChopRightFrom(TAddressSegment * AddrSeg, TAddress Addr);
+
+  // Drop right part, exclude address
+  TBool ChopRightAt(TAddressSegment * AddrSeg, TAddress Addr);
+
+  // )
 }
 
 /*
   2024 # # # # # # # # # # # # # # # # #
-  2025 # # # # # # #
-  2025-08-30
+  2025 # # # # # # # #
+  2025-09-02
 */
