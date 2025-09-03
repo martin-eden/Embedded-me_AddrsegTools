@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-02
+  Last mod.: 2025-09-03
 */
 
 #include <me_AddrsegTools.h>
@@ -195,7 +195,25 @@ TBool me_AddrsegTools::ChopRightAt(
 }
 
 /*
+  Create segment from two addresses or fail
+*/
+TBool me_AddrsegTools::FillSegFromAddrs(
+  TAddressSegment * AddrSeg,
+  TAddress StartAddr,
+  TAddress EndAddr
+)
+{
+  if (StartAddr > EndAddr)
+    return false;
+
+  AddrSeg->Addr = StartAddr;
+  AddrSeg->Size = CalcSizeFromAddrs(StartAddr, EndAddr);
+
+  return true;
+}
+
+/*
   2024 # # # # # # # # # # #
-  2025 # # #
-  2025-09-02
+  2025 # # # #
+  2025-09-03
 */

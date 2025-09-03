@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-02
+  Last mod.: 2025-09-03
 */
 
 #pragma once
@@ -35,10 +35,13 @@ namespace me_AddrsegTools
   TBool ChopRightAt(TAddressSegment * AddrSeg, TAddress Addr);
 
   // )
+
+  // Create segment from start and end addresses
+  TBool FillSegFromAddrs(TAddressSegment *, TAddress Start, TAddress Stop);
 }
 
 /*
   2024 # # # # # # # # # # # # # # # # #
-  2025 # # # # # # # #
-  2025-09-02
+  2025 # # # # # # # # #
+  2025-09-03
 */
