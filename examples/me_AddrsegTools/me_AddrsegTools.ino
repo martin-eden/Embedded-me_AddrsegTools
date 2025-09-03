@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-02
+  Last mod.: 2025-09-03
 */
 
 #include <me_AddrsegTools.h>
@@ -11,35 +11,43 @@
 #include <me_Console.h>
 #include <me_WorkMemory.h>
 
+void PrintAddress(
+  TAsciiz Annotation,
+  TAddress Addr
+)
+{
+  Console.Write(Annotation);
+  Console.Print(Addr);
+}
+
 void PrintWrappings(
   TAddressSegment AddrSeg
 )
 {
-  Console.Write("Addr (");
-  Console.Print(AddrSeg.Addr);
+  Console.Write("( ");
+  PrintAddress("Addr", AddrSeg.Addr);
+  PrintAddress("Size", AddrSeg.Size);
   Console.Write(")");
-
-  Console.Write(" ");
-
-  Console.Write("Size (");
-  Console.Print(AddrSeg.Size);
-  Console.Write(")");
-
   Console.EndLine();
 }
 
 void PrintSegmentDetails(
-  TAsciiz Header,
+  TAsciiz Annotation,
   TAddressSegment AddrSeg
 )
 {
-  Console.Print(Header);
+  Console.Print(Annotation);
 
   Console.Indent();
 
   PrintWrappings(AddrSeg);
 
   Console.Unindent();
+}
+
+void PrintEmptyLine()
+{
+  Console.Print("");
 }
 
 void TestFixedSegment()
@@ -59,7 +67,7 @@ void TestFixedSegment()
   AddrSeg = { .Addr = TAddress_Max, .Size = 1};
 
   PrintSegmentDetails("Last addressable byte", AddrSeg);
-  Console.Print("");
+  PrintEmptyLine();
 }
 
 void TestIsValid()
@@ -76,12 +84,11 @@ void TestIsValid()
     me_AddrsegTools::IsValid(ValidAddrSeg) &&
     !me_AddrsegTools::IsValid(InvalidAddrSeg)
   )
-    Console.Write("Ok");
+    Console.Write("Passed");
   else
-    Console.Write("Fail");
+    Console.Write("Failed");
 
-  Console.EndLine();
-  Console.Print("");
+  PrintEmptyLine();
 }
 
 void TestInvalidate()
@@ -97,12 +104,11 @@ void TestInvalidate()
   Console.Write("Invalidate(): ");
 
   if (me_AddrsegTools::IsValid(AddrSeg))
-    Console.Write("Fail");
+    Console.Write("Failed");
   else
-    Console.Write("Ok");
+    Console.Write("Passed");
 
-  Console.EndLine();
-  Console.Print("");
+  PrintEmptyLine();
 }
 
 void TestIsInside()
@@ -116,12 +122,11 @@ void TestIsInside()
   Console.Write("IsInside(): ");
 
   if (!me_AddrsegTools::IsInside(InnerSeg, OuterSeg))
-    Console.Write("Fail");
+    Console.Write("Failed");
   else
-    Console.Write("Ok");
+    Console.Write("Passed");
 
-  Console.EndLine();
-  Console.Print("");
+  PrintEmptyLine();
 }
 
 void TestChops()
@@ -169,6 +174,34 @@ void TestChops()
 
     PrintSegmentDetails("Right-chopped segment (exclude cut)", ChoppedSeg);
   }
+
+  PrintEmptyLine();
+}
+
+/*
+  Test segment creation from two addresses
+*/
+void TestFromAddrs()
+{
+  TAddressSegment AddrSeg;
+  TAddress StartAddr;
+  TAddress EndAddr;
+
+  StartAddr = 101;
+  EndAddr = 102;
+
+  Console.Write("Start address");
+  Console.Print(StartAddr);
+
+  Console.Write("End address");
+  Console.Print(EndAddr);
+
+  if (!me_AddrsegTools::FillSegFromAddrs(&AddrSeg, StartAddr, EndAddr))
+    Console.Print("FillSegFromAddrs() failed");
+
+  PrintSegmentDetails("Segment created by two addresses", AddrSeg);
+
+  PrintEmptyLine();
 }
 
 void RunTests()
@@ -178,6 +211,7 @@ void RunTests()
   TestInvalidate();
   TestIsInside();
   TestChops();
+  TestFromAddrs();
 }
 
 void setup()
@@ -197,6 +231,6 @@ void loop()
 
 /*
   2024 # # # # # # # # # # #
-  2025 # # #
-  2025-09-02
+  2025 # # # #
+  2025-09-03
 */
