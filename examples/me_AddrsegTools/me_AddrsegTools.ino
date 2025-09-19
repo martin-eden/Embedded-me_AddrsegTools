@@ -2,13 +2,14 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-03
+  Last mod.: 2025-09-19
 */
 
 #include <me_AddrsegTools.h>
 
 #include <me_BaseTypes.h>
 #include <me_Console.h>
+#include <me_DebugPrints.h>
 #include <me_WorkMemory.h>
 
 void PrintAddress(
@@ -16,18 +17,7 @@ void PrintAddress(
   TAddress Addr
 )
 {
-  Console.Write(Annotation);
-  Console.Print(Addr);
-}
-
-void PrintWrappings(
-  TAddressSegment AddrSeg
-)
-{
-  Console.Write("( ");
-  PrintAddress("Addr", AddrSeg.Addr);
-  PrintAddress("Size", AddrSeg.Size);
-  Console.Write(")");
+  me_DebugPrints::Print(Annotation, Addr);
   Console.EndLine();
 }
 
@@ -36,13 +26,7 @@ void PrintSegmentDetails(
   TAddressSegment AddrSeg
 )
 {
-  Console.Print(Annotation);
-
-  Console.Indent();
-
-  PrintWrappings(AddrSeg);
-
-  Console.Unindent();
+  me_DebugPrints::PrintAddrseg(Annotation, AddrSeg);
 }
 
 void PrintEmptyLine()
@@ -78,15 +62,11 @@ void TestIsValid()
   PrintSegmentDetails("Valid segment", ValidAddrSeg);
   PrintSegmentDetails("Invalid segment", InvalidAddrSeg);
 
-  Console.Write("IsValid(): ");
-
-  if (
+  Console.Write("IsValid():");
+  Console.Print(
     me_AddrsegTools::IsValid(ValidAddrSeg) &&
     !me_AddrsegTools::IsValid(InvalidAddrSeg)
-  )
-    Console.Write("Passed");
-  else
-    Console.Write("Failed");
+  );
 
   PrintEmptyLine();
 }
@@ -101,12 +81,8 @@ void TestInvalidate()
 
   PrintSegmentDetails("Invalid segment", AddrSeg);
 
-  Console.Write("Invalidate(): ");
-
-  if (me_AddrsegTools::IsValid(AddrSeg))
-    Console.Write("Failed");
-  else
-    Console.Write("Passed");
+  Console.Write("Invalidate():");
+  Console.Print(me_AddrsegTools::IsValid(AddrSeg));
 
   PrintEmptyLine();
 }
@@ -119,12 +95,8 @@ void TestIsInside()
   PrintSegmentDetails("Inner segment", InnerSeg);
   PrintSegmentDetails("Outer segment", OuterSeg);
 
-  Console.Write("IsInside(): ");
-
-  if (!me_AddrsegTools::IsInside(InnerSeg, OuterSeg))
-    Console.Write("Failed");
-  else
-    Console.Write("Passed");
+  Console.Write("IsInside():");
+  Console.Print(me_AddrsegTools::IsInside(InnerSeg, OuterSeg));
 
   PrintEmptyLine();
 }
@@ -141,6 +113,7 @@ void TestChops()
 
   Console.Write("Cutting address");
   Console.Print(CutAddr);
+  Console.EndLine();
 
   {
     ChoppedSeg = OrigSeg;
@@ -190,11 +163,8 @@ void TestFromAddrs()
   StartAddr = 101;
   EndAddr = 102;
 
-  Console.Write("Start address");
-  Console.Print(StartAddr);
-
-  Console.Write("End address");
-  Console.Print(EndAddr);
+  PrintAddress("Start address", StartAddr);
+  PrintAddress("End address", EndAddr);
 
   if (!me_AddrsegTools::FillSegFromAddrs(&AddrSeg, StartAddr, EndAddr))
     Console.Print("FillSegFromAddrs() failed");
