@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-03
+  Last mod.: 2025-09-20
 */
 
 #include <me_AddrsegTools.h>
@@ -197,7 +197,7 @@ TBool me_AddrsegTools::ChopRightAt(
 /*
   Create segment from two addresses or fail
 */
-TBool me_AddrsegTools::FillSegFromAddrs(
+TBool me_AddrsegTools::SegFromAddrs(
   TAddressSegment * AddrSeg,
   TAddress StartAddr,
   TAddress EndAddr

@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-19
+  Last mod.: 2025-09-20
 */
 
 #include <me_AddrsegTools.h>
@@ -166,8 +166,8 @@ void TestFromAddrs()
   PrintAddress("Start address", StartAddr);
   PrintAddress("End address", EndAddr);
 
-  if (!me_AddrsegTools::FillSegFromAddrs(&AddrSeg, StartAddr, EndAddr))
-    Console.Print("FillSegFromAddrs() failed");
+  if (!me_AddrsegTools::SegFromAddrs(&AddrSeg, StartAddr, EndAddr))
+    Console.Print("SegFromAddrs() failed");
 
   PrintSegmentDetails("Segment created by two addresses", AddrSeg);
 
