@@ -38,18 +38,6 @@ TBool CanSubtract(
 }
 
 /*
-  [Internal] Get end address
-
-  Segment MUST be valid
-*/
-TAddress GetEndAddr(
-  TAddressSegment Seg
-)
-{
-  return (Seg.Addr + Seg.Size - 1);
-}
-
-/*
   [Internal] Calculate size from start and end addresses
 
   No input checks!
@@ -85,6 +73,18 @@ void me_AddrsegTools::Invalidate(
 {
   Seg->Addr = 0;
   Seg->Size = 0;
+}
+
+/*
+  Get end address
+
+  Segment MUST be valid
+*/
+TAddress me_AddrsegTools::GetEndAddr(
+  TAddressSegment Seg
+)
+{
+  return (Seg.Addr + Seg.Size - 1);
 }
 
 /*

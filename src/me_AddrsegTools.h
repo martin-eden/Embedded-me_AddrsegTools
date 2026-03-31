@@ -12,10 +12,13 @@
 namespace me_AddrsegTools
 {
   // Validity check
-  TBool IsValid(TAddressSegment AddrSeg);
+  TBool IsValid(TAddressSegment);
 
   // Invalidation
-  void Invalidate(TAddressSegment * AddrSeg);
+  void Invalidate(TAddressSegment *);
+
+  // Get end address. Segment MUST be valid
+  TAddress GetEndAddr(TAddressSegment);
 
   // Nesting check
   TBool IsInside(TAddressSegment InnerSeg, TAddressSegment OuterSeg);
