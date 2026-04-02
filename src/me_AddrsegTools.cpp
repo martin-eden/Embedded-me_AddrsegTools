@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-20
+  Last mod.: 2026-04-02
 */
 
 #include <me_AddrsegTools.h>
@@ -89,18 +89,14 @@ TAddress me_AddrsegTools::GetEndAddr(
 
 /*
   Check for nesting
+
+  Segments MUST be valid.
 */
 TBool me_AddrsegTools::IsInside(
   TAddressSegment InnerSeg,
   TAddressSegment OuterSeg
 )
 {
-  if (!IsValid(InnerSeg))
-    return false;
-
-  if (!IsValid(OuterSeg))
-    return false;
-
   if (InnerSeg.Addr < OuterSeg.Addr)
     return false;
 
@@ -214,6 +210,6 @@ TBool me_AddrsegTools::SegFromAddrs(
 
 /*
   2024 # # # # # # # # # # #
-  2025 # # # #
-  2025-09-03
+  2025 # # # # #
+  2026-04-02
 */

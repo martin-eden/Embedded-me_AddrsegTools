@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-20
+  Last mod.: 2026-04-02
 */
 
 #pragma once
@@ -20,7 +20,7 @@ namespace me_AddrsegTools
   // Get end address. Segment MUST be valid
   TAddress GetEndAddr(TAddressSegment);
 
-  // Nesting check
+  // Nesting check. Segments MUST be valid
   TBool IsInside(TAddressSegment InnerSeg, TAddressSegment OuterSeg);
 
   // (Side selection
